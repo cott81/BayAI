@@ -2,7 +2,7 @@ enable_testing()
 
 include_directories("../include")
 
-#add_subdirectory(engine)
+add_subdirectory(graph)
 #add_subdirectory(fancyLib)
 
 
@@ -13,6 +13,6 @@ foreach(dir ${dirs})
 endforeach()
 
 add_executable(BayAI main.cpp)
-#target_link_libraries(CmakeTest Engine)
+target_link_libraries(BayAI Graph)
 
 #add_test(toDoTest toDo)

@@ -7,14 +7,8 @@
 
 int main(int    argc, char** argv)
 {
-    int result = 0;
+    cout << "Test Application: ..." << endl;
 
-    std::cout <<"1"<< std::endl;
-    std::cout <<"2"<< std::endl;
-    std::cout <<"3"<< std::endl;
-
-
-
-    return result;
+    return 0;
 }
 
