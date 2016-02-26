@@ -12,7 +12,7 @@ foreach(dir ${dirs})
   message(STATUS "dir='${dir}'")
 endforeach()
 
-#add_executable(CmakeTest main.cpp)
+add_executable(BayAI main.cpp)
 #target_link_libraries(CmakeTest Engine)
 
 #add_test(toDoTest toDo)
