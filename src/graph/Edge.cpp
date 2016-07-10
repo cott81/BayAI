@@ -5,16 +5,20 @@
  */
 
 #include "Edge.h"
+#include "Vertex.h"
+
+#include <iostream>
 
 namespace graph {
 
-Edge::Edge() {
-	// TODO Auto-generated constructor stub
-
+Edge::Edge(Vertex* originPtr, Vertex* goalPtr, unsigned int edgeId)
+{
+	this->link.first = originPtr;
+	this->link.second = goalPtr;
+	this->id = edgeId;
 }
 
 Edge::~Edge() {
-	// TODO Auto-generated destructor stub
 }
 
 } /* namespace graph */
