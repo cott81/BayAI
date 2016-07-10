@@ -23,35 +23,49 @@ Graph::~Graph()
 
 unsigned int Graph::GenerateVertexId()
 {
-	unsigned int newVertexId = this->vertexCounter++;
+	// ids starts with 1; 0 is preserved for an unvalid id;
+	unsigned int newVertexId = ++this->vertexCounter;
 	return newVertexId;
 }
 
 unsigned int Graph::GenerateEdgeId()
 {
-	unsigned int newVertexId = this->vertexCounter++;
-	return newVertexId;
+	unsigned int newEdgeId = ++this->edgeCounter;
+	return newEdgeId;
 }
 
-int Graph::AddVertex()
+unsigned int Graph::AddVertex()
 {
-	int vertexId = this->vertexCounter;
+	int vertexId = GenerateVertexId();
 
 	Vertex v(vertexId);
 	this->vertices.push_back(v);
 
 	std::cout << "Graph: DEBUG: created vertex with id: " << vertexId << std::endl;
 
-	//increase vertex id counter
-	this->vertexCounter++;
-
 	return vertexId;
 }
 
-int Graph::AddEdge(int startVertexId, int endVertexId)
+Vertex* Graph::GetVertex(unsigned int vertexId)
+{
+	//makes the assumption that the vertexId is the vector index
+	// vertexId starts with 1 -> vector index needs to be vertexId -1
+	unsigned int vertexIdx = vertexId - 1;
+	return &(this->vertices[vertexIdx]);
+}
+
+Edge* Graph::GetEdge(unsigned int edgeId)
+{
+	// defined an offset of 1000
+	// first edge has id 1001. substract the offset and 1 to start with idx 0 of the vector
+	unsigned int edgeIdx = edgeId - EDGE_COUNTER_OFFSET -1;
+	return &(this->edges[edgeIdx]);
+}
+
+unsigned int Graph::AddEdge(unsigned int startVertexId, unsigned int endVertexId)
 {
 	// error checks: check if vertices are already defined
-	int idToCheck;
+	unsigned int idToCheck;
 	if (startVertexId > endVertexId)
 	{
 		idToCheck = startVertexId;
@@ -67,7 +81,7 @@ int Graph::AddEdge(int startVertexId, int endVertexId)
 		return -1;
 	}
 
-	if ((int)this->vertices.size() < idToCheck )
+	if ((unsigned int)this->vertices.size() < idToCheck )
 	{
 		// use the fact that ids are the place the vector
 		std::cerr << "Graph: ERROR: vertex id: " << idToCheck << "is not yet defined" << std::endl;
@@ -77,35 +91,27 @@ int Graph::AddEdge(int startVertexId, int endVertexId)
 	//TODO: check if there is already a same edge in the list
 
 	// store the edge in graph's edge list
-	Edge e(&(this->vertices[startVertexId]), &(this->vertices[endVertexId]), this->edgeCounter);
+	//Edge e(&(this->vertices[startVertexId]), &(this->vertices[endVertexId]), this->edgeCounter);
+	unsigned int edgeId = GenerateEdgeId();
+	Edge e(GetVertex(startVertexId), GetVertex(endVertexId), edgeId);
 	this->edges.push_back(e);
 
 
 	// get the adress from the stored object in the vector
 
 	//HACK: edge ids start with 1000
-	Edge* ePtr = &(this->edges[this->edgeCounter - EDGE_COUNTER_OFFSET]);
+	//Edge* ePtr = &(this->edges[this->edgeCounter - EDGE_COUNTER_OFFSET]);
+	Edge* ePtr = GetEdge(edgeId);
 
 	// link vertices (add entries to the vertices data structures)
-	this->vertices[startVertexId].AddOutgoingEdge(ePtr);
-	this->vertices[endVertexId].AddIncomingEdge(ePtr);
+	GetVertex(startVertexId)->AddOutgoingEdge(ePtr);
+	GetVertex(endVertexId)->AddIncomingEdge(ePtr);
 
 
 	std::cout << "Graph::AddEdge(): DEBUG: created edge between (start) id: " << startVertexId
 			<< " and (end) id: "<< endVertexId <<  std::endl;
 
-	int temp_edgeId = this->edgeCounter;
-
-	//increase edge id counter
-	this->edgeCounter++;
-
-	return temp_edgeId;
-}
-
-Vertex* Graph::GetVertex(unsigned int vertexId)
-{
-	//makes the assumption that the vertexId is the vector index
-	return &(this->vertices[vertexId]);
+	return edgeId;
 }
 
 void Graph::PrintVertices()

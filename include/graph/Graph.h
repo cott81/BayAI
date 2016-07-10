@@ -20,15 +20,15 @@ public:
 	Graph();
 	virtual ~Graph();
 
-	unsigned int GenerateVertexId();
-	int AddVertex();
+
+	unsigned int AddVertex();
 	//int RemoveVertex();
 
-	unsigned int GenerateEdgeId();
-	int AddEdge(int startVertexId, int endVertexId);
+	unsigned int AddEdge(unsigned int startVertexId, unsigned int endVertexId);
 	//int RemoveEdge();
 
 	Vertex* GetVertex(unsigned int vertexId);
+	Edge* GetEdge(unsigned int edgeId);
 
 	void PrintVertices();
 	void PrintEdges();
@@ -41,6 +41,9 @@ private:
 	//adjacency list
 	std::vector<Vertex> vertices;
 	std::vector<Edge> edges;
+
+	unsigned int GenerateVertexId();
+	unsigned int GenerateEdgeId();
 
 };
 
