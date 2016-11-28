@@ -11,13 +11,21 @@
 #include "Vertex.h"
 
 #include <vector>
+#include <string>
+
+#include "IA.h"
 
 namespace graph {
 
+enum GraphRepresentation
+{
+	ADJACENCY_LIST = 0,
+	ADJACENCY_MATRIX
+};
 
 class Graph {
 public:
-	Graph();
+	Graph(GraphRepresentation style=ADJACENCY_LIST);
 	virtual ~Graph();
 
 
@@ -31,7 +39,11 @@ public:
 	Edge* GetEdge(unsigned int edgeId);
 
 	void PrintVertices();
+	std::string GenerateDOTDescription();
+	void VisualizeDOTGraph(std::string name = "out");
 	void PrintEdges();
+
+	int SomethingToTest(float in, graph::IA* a);
 
 private:
 	unsigned int vertexCounter;

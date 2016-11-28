@@ -8,13 +8,36 @@
 #include "Graph.h"
 
 #include <iostream>
+#include <sstream>
+#include <stdlib.h> //system
+#include <fstream> //ofstream
+
+#include "A.h"
+
 
 namespace graph
 {
-Graph::Graph() {
-	this->vertexCounter = 0;
-	this->edgeCounter = EDGE_COUNTER_OFFSET;
+
+Graph::Graph(GraphRepresentation style)
+{
+	if (style == ADJACENCY_LIST)
+	{
+		this->vertexCounter = 0;
+		this->edgeCounter = EDGE_COUNTER_OFFSET;
+	}
+	else if (style == ADJACENCY_MATRIX)
+	{
+		//TODO: add the adjacency matrix presentation
+		std::cout << "Graph(): adjacency matrix representation is not yet implemented. " << std::endl;
+	}
+	else
+	{
+		std::cerr << "Graph(): FAILURE: graph presentation style: %d is not supported." << std::endl;
+	}
+
+
 }
+
 
 Graph::~Graph()
 {
@@ -65,6 +88,7 @@ Edge* Graph::GetEdge(unsigned int edgeId)
 unsigned int Graph::AddEdge(unsigned int startVertexId, unsigned int endVertexId)
 {
 	// error checks: check if vertices are already defined
+	// TODO: if remove of vertices are allowed this needs some refinement!
 	unsigned int idToCheck;
 	if (startVertexId > endVertexId)
 	{
@@ -99,8 +123,6 @@ unsigned int Graph::AddEdge(unsigned int startVertexId, unsigned int endVertexId
 
 	// get the adress from the stored object in the vector
 
-	//HACK: edge ids start with 1000
-	//Edge* ePtr = &(this->edges[this->edgeCounter - EDGE_COUNTER_OFFSET]);
 	Edge* ePtr = GetEdge(edgeId);
 
 	// link vertices (add entries to the vertices data structures)
@@ -123,6 +145,39 @@ void Graph::PrintVertices()
 	}
 }
 
+std::string Graph::GenerateDOTDescription()
+{
+	// build the string
+	std::stringstream ss;
+
+	ss << "digraph G {" << std::endl;
+
+	for(Edge e : this->edges)
+	{
+		ss << e.GetStartVertexPtr()->GetId() << "->" << e.GetEndVertexPtr()->GetId() << std::endl;
+	}
+
+	ss << "}" << std::endl;
+
+	return ss.str();
+}
+
+void Graph::VisualizeDOTGraph(std::string name)
+{
+	std::string dotDesc = GenerateDOTDescription();
+
+	std::ofstream dotFile;
+	dotFile.open("graphDef.gv");
+	dotFile << dotDesc;
+	dotFile.close();
+
+	std::string dotCmd = "dot -Tpng graphDef.gv -o " + name +".png";
+	system(dotCmd.c_str());
+	std::string showCmd = "gpicview "+ name + ".png &";
+	system(showCmd.c_str());
+	return;
+}
+
 void Graph::PrintEdges()
 {
 	std::cout << "Print edges for graph:" << std::endl;
@@ -131,6 +186,27 @@ void Graph::PrintEdges()
 		std::cout << "\t id: " << e.GetId() << ": " << e.GetStartVertexPtr()->GetId() << " -> " << e.GetEndVertexPtr()->GetId() << std::endl;
 	}
 }
+
+
+int Graph::SomethingToTest(float in, IA* a)
+{
+	//some call
+	//IA* a = new A();
+	int ret = a->testFunction(1);
+
+	std::cout << "graph::testFunc(1) = " << ret << std::endl;
+
+	if (in > 0)
+	{
+		return ret;
+	}
+	else
+	{
+		return -1;
+	}
+}
+
+
 
 } /* namespace graph */
 
