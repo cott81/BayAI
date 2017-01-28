@@ -8,14 +8,12 @@
 #include <tuple>
 #include <vector>
 
+  graph::Graph generate(void);
 
-int main(int    argc, char** argv)
+graph::Graph generate(void)
 {
-	cout << "/*" << endl; // start comment for DOT
-    cout << "Test Application: ..." << endl;
 
     graph::Graph g(graph::ADJACENCY_LIST);
-
 
     int idNodeA = g.AddVertex();
     int idNodeB = g.AddVertex();
@@ -35,13 +33,20 @@ int main(int    argc, char** argv)
     g.GetVertex(idNodeA)->PrintOutEdges();
     cout << g.GetVertex(idNodeA)->GetOutEdges()[1]->GetId() << endl;
 
+    return g;
+}
 
+int main(int    argc, char** argv)
+{
+	cout << "/*" << endl; // start comment for DOT
+    cout << "Test Application: ..." << endl;
+
+    // generate data structure ...
+    graph::Graph g = generate();
 
     cout << "*/" << endl; //end comment in DOT
 
     cout << g.GenerateDOTDescription() << std::endl;
-
-    g.VisualizeDOTGraph();
 
     g.VisualizeDOTGraph("test");
 

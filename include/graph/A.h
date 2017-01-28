@@ -17,7 +17,12 @@ public:
 	A();
 	virtual ~A();
 
+	//virtual int primFunctionToTest();
 	virtual int testFunction(int a);
+
+protected:
+	virtual int subTestFunc(int num);
+
 };
 
 } /* namespace graph */

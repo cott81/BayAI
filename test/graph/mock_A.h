@@ -10,23 +10,18 @@
 
 #include "gmock/gmock.h"
 
+#include "A.h"
+
 namespace graph {
 
-class Mock_A : public IA {
+
+class Mock_A: public A {
 public:
 
 	Mock_A(){};
 	virtual ~Mock_A() {};
 
-	/*
-	virtual int testFunction(int a)
-	{
-		// mocked return
-		return a;
-	}
-	*/
-
-	MOCK_METHOD1(testFunction, int(int a));
+	MOCK_METHOD1(subTestFunc, int(int num));
 };
 
 }

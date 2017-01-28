@@ -15,7 +15,13 @@ public:
 
 	IA(){};
 	virtual ~IA(){};
+	//virtual int primFunctionToTest() = 0;
 	virtual int testFunction(int a) = 0;
+
+protected:
+	virtual int subTestFunc(int num){return 0;};
+
+
 };
 
 } /* namespace graph */

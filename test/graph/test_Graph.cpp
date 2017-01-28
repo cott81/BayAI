@@ -16,6 +16,7 @@ using ::testing::Return;
 using ::testing::_; // for arbitrary mock function arguments
 using ::testing::Ge;
 
+
 TEST(GraphTest, SomethingToTest_test)
 {
 	graph::Mock_A ma;
@@ -32,4 +33,7 @@ TEST(GraphTest, SomethingToTest_test)
 
     EXPECT_EQ(100, ret);
 }
+
+
+
 

@@ -18,9 +18,32 @@ A::~A() {
 	// TODO Auto-generated destructor stub
 }
 
+/*
+int A::primFunctionToTest()
+{
+	int sum = 0;
+
+	sum = sum + testFunction(1);
+	sum = sum + testFunction(1);
+	sum = sum + testFunction(1);
+
+	return sum;
+}
+*/
+
 int A::testFunction(int a)
 {
-	return a;
+	int ret = 0;
+
+	ret = ret + subTestFunc(a);
+	ret = ret + subTestFunc(a);
+
+	return ret;
+}
+
+int A::subTestFunc(int num)
+{
+	return num;
 }
 
 } /* namespace graph */
