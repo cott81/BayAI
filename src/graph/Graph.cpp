@@ -27,15 +27,12 @@ Graph::Graph(GraphRepresentation style)
 	}
 	else if (style == ADJACENCY_MATRIX)
 	{
-		//TODO: add the adjacency matrix presentation
 		std::cout << "Graph(): adjacency matrix representation is not yet implemented. " << std::endl;
 	}
 	else
 	{
 		std::cerr << "Graph(): FAILURE: graph presentation style: %d is not supported." << std::endl;
 	}
-
-
 }
 
 
@@ -64,8 +61,6 @@ unsigned int Graph::AddVertex()
 	Vertex v(vertexId);
 	this->vertices.push_back(v);
 
-	std::cout << "Graph: DEBUG: created vertex with id: " << vertexId << std::endl;
-
 	return vertexId;
 }
 
@@ -85,7 +80,7 @@ Edge* Graph::GetEdge(unsigned int edgeId)
 	return &(this->edges[edgeIdx]);
 }
 
-unsigned int Graph::AddEdge(unsigned int startVertexId, unsigned int endVertexId)
+int Graph::AddEdge(unsigned int startVertexId, unsigned int endVertexId)
 {
 	// error checks: check if vertices are already defined
 	// TODO: if remove of vertices are allowed this needs some refinement!
@@ -102,36 +97,42 @@ unsigned int Graph::AddEdge(unsigned int startVertexId, unsigned int endVertexId
 	{
 		std::cerr << "Graph: ERROR: start and end of the edge are identical: " << startVertexId << std::endl;
 		std::cerr << "Graph: ERROR: do not add this edge" << std::endl;
-		return -1;
+		return IDENTICAL_EDGE_START_END_ERROR;
 	}
 
 	if ((unsigned int)this->vertices.size() < idToCheck )
 	{
 		// use the fact that ids are the place the vector
 		std::cerr << "Graph: ERROR: vertex id: " << idToCheck << "is not yet defined" << std::endl;
-		return -1;
+		return UNDEFINED_VERTEX_ERROR;
 	}
 
-	//TODO: check if there is already a same edge in the list
-
 	// store the edge in graph's edge list
-	//Edge e(&(this->vertices[startVertexId]), &(this->vertices[endVertexId]), this->edgeCounter);
 	unsigned int edgeId = GenerateEdgeId();
 	Edge e(GetVertex(startVertexId), GetVertex(endVertexId), edgeId);
+
+	// store edge object on vector
 	this->edges.push_back(e);
 
-
 	// get the adress from the stored object in the vector
-
 	Edge* ePtr = GetEdge(edgeId);
 
+	//check if there is already a same edge in the list by checking the vertices and their incoming and outgoing edges
 	// link vertices (add entries to the vertices data structures)
-	GetVertex(startVertexId)->AddOutgoingEdge(ePtr);
-	GetVertex(endVertexId)->AddIncomingEdge(ePtr);
+	if (GetVertex(startVertexId)->AddOutgoingEdge(ePtr) == -1)
+	{
+		std::cerr << "Graph: ERROR: Outgoing Edge for vertex id: " << startVertexId << "to "<< endVertexId<<" already exists." << std::endl;
+		//TODO remove the edge from vector
+		return DUPLICATED_EDGE_ERROR;
+	}
 
+	if (GetVertex(endVertexId)->AddIncomingEdge(ePtr) == -1)
+	{
+		std::cerr << "Graph: ERROR: Incoming Edge for vertex id: " << endVertexId << "from "<< startVertexId <<" already exists." << std::endl;
+		//TODO remove the edge from vector
+		return DUPLICATED_EDGE_ERROR;
+	}
 
-	std::cout << "Graph::AddEdge(): DEBUG: created edge between (start) id: " << startVertexId
-			<< " and (end) id: "<< endVertexId <<  std::endl;
 
 	return edgeId;
 }
@@ -188,17 +189,11 @@ void Graph::PrintEdges()
 }
 
 
-int Graph::SomethingToTest(float in, IA* a)
+int Graph::SomethingToTest(float in)
 {
-	//some call
-	//IA* a = new A();
-	int ret = a->testFunction(1);
-
-	std::cout << "graph::testFunc(1) = " << ret << std::endl;
-
 	if (in > 0)
 	{
-		return ret;
+		return 0;
 	}
 	else
 	{

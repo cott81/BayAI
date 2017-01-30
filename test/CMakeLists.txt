@@ -19,8 +19,8 @@ link_directories(~/work/FunProjects/googletest/build/googlemock ~/work/FunProjec
  
 set(SRC_TESTS
 	tests.cpp
-	#graph/test_Graph.cpp
-	graph/A_test.cpp
+	graph/test_Graph.cpp
+	#graph/A_test.cpp
 	
 	)
 # Link runTests with what we want to test and the GTest and pthread library

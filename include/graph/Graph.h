@@ -13,7 +13,6 @@
 #include <vector>
 #include <string>
 
-#include "IA.h"
 
 namespace graph {
 
@@ -21,6 +20,14 @@ enum GraphRepresentation
 {
 	ADJACENCY_LIST = 0,
 	ADJACENCY_MATRIX
+};
+
+enum GraphErrors
+{
+	UNSPECIFIED_ERROR = -1,
+	IDENTICAL_EDGE_START_END_ERROR = -2,
+	UNDEFINED_VERTEX_ERROR = -3,
+	DUPLICATED_EDGE_ERROR = -4
 };
 
 class Graph {
@@ -32,7 +39,7 @@ public:
 	unsigned int AddVertex();
 	//int RemoveVertex();
 
-	unsigned int AddEdge(unsigned int startVertexId, unsigned int endVertexId);
+	int AddEdge(unsigned int startVertexId, unsigned int endVertexId);
 	//int RemoveEdge();
 
 	Vertex* GetVertex(unsigned int vertexId);
@@ -43,7 +50,7 @@ public:
 	void VisualizeDOTGraph(std::string name = "out");
 	void PrintEdges();
 
-	int SomethingToTest(float in, graph::IA* a);
+	int SomethingToTest(float in);
 
 private:
 	unsigned int vertexCounter;

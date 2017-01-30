@@ -12,7 +12,7 @@ namespace graph {
 
 
 Vertex::Vertex(unsigned int id) {
-	std::cout << "Vertex: DEBUG: create vertex with id: "<< id << std::endl;
+//	std::cout << "Vertex: DEBUG: create vertex with id: "<< id << std::endl;
 	this->id = id;
 }
 
@@ -29,13 +29,16 @@ int Vertex::AddIncomingEdge(Edge* incomingEdgePtr)
 				<< incomingEdgePtr->GetEndVertexPtr()->GetId() << " does not match this id: " << this->id << std::endl;
 	}
 
-	//check if it is already in the lest
+	//check if it is already in the list
 	//TODO: sort the vector after the id of the parent vertex -> need only to iterate until a higher id is found.
 	for (Edge* ePtr : this->in_edges)
 	{
-		if (ePtr == incomingEdgePtr)
+		if (
+				( ePtr->GetStartVertexPtr()->GetId() == incomingEdgePtr->GetStartVertexPtr()->GetId() )
+				&& ( ePtr->GetEndVertexPtr()->GetId() == incomingEdgePtr->GetEndVertexPtr()->GetId() )
+			)
 		{
-			std::cout << "Vertex::AddIncomingEdge(): WARN: edge already stored." << std::endl;
+			std::cerr << "Vertex::AddIncomingEdge(): Error: edge already stored." << std::endl;
 			return -1;
 		}
 	}
@@ -52,16 +55,19 @@ int Vertex::AddOutgoingEdge(Edge* outgoingEdgePtr)
 	{
 		std::cout << "Vertex::AddOutgoingEdge(): ERROR: given edge pointer to store as an outgoing edge start vertex id: "
 				<< outgoingEdgePtr->GetStartVertexPtr()->GetId() << " does not match this id: " << this->id << std::endl;
+		return -1;
 	}
 
-	//check if it is already in the lest
+	//check if it is already in the list
 	//TODO: sort the vector after the id of the parent vertex -> need only to iterate until a higher id is found.
 	for (Edge* ePtr : this->out_edges)
 	{
-		std::cout << "edge: " << ePtr->GetStartVertexPtr()->GetId() << " " << ePtr->GetEndVertexPtr()->GetId() << std::endl;
-		if (ePtr == outgoingEdgePtr)
+		if (
+				( ePtr->GetStartVertexPtr()->GetId() == outgoingEdgePtr->GetStartVertexPtr()->GetId() )
+				&& ( ePtr->GetEndVertexPtr()->GetId() == outgoingEdgePtr->GetEndVertexPtr()->GetId() )
+			)
 		{
-			std::cout << "Vertex::AddOutgoingEdge(): WARN: edge already stored." << std::endl;
+			std::cerr << "Vertex::AddOutgoingEdge(): ERROR: edge already stored. Do not add it again." << std::endl;
 			return -1;
 		}
 	}
