@@ -37,7 +37,7 @@ public:
 
 
 	unsigned int AddVertex();
-	//int RemoveVertex();
+	int RemoveVertex(unsigned int vertexId);
 
 	int AddEdge(unsigned int startVertexId, unsigned int endVertexId);
 	//int RemoveEdge();
@@ -51,6 +51,8 @@ public:
 	void PrintEdges();
 
 	int SomethingToTest(float in);
+
+	const unsigned int GetEdgeIdOffset(void){return EDGE_COUNTER_OFFSET;};
 
 private:
 	unsigned int vertexCounter;

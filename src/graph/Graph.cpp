@@ -66,18 +66,101 @@ unsigned int Graph::AddVertex()
 
 Vertex* Graph::GetVertex(unsigned int vertexId)
 {
-	//makes the assumption that the vertexId is the vector index
 	// vertexId starts with 1 -> vector index needs to be vertexId -1
+	graph::Vertex* vertexPtr = nullptr;
+
 	unsigned int vertexIdx = vertexId - 1;
-	return &(this->vertices[vertexIdx]);
+
+	// we have an ordered list. End element has always biggest id
+	if ( vertexId > this->vertices.end()->GetId())
+	{
+		//id is not yet added
+		std::cerr << "Graph: ERROR: vertex with id " << vertexId << " is not yet added to the graph. Return NULL." << std::endl;
+		vertexPtr = nullptr;
+	}
+	else
+	{
+		// use an iterator
+		std::vector<Vertex>::iterator startIter;
+
+		// check if the idx can directly be used (id last element could be bigger as available elements in vector)
+		if ((unsigned int) this->vertices.size() < (vertexIdx + 1) )
+		{
+			startIter = this->vertices.begin() + vertexIdx;
+		}
+		else
+		{
+			startIter = this->vertices.end();
+		}
+
+		// iterate through vector beginning from the expected element location (startIter) towards the beginning
+		std::vector<Vertex>::iterator it;
+		for(it= startIter; it >= this->vertices.begin(); it-- )
+		{
+		    // element found
+		    if((*it).GetId() == vertexId)
+		    {
+		    	vertexPtr = &*it;
+		        break;
+		    }
+		}
+
+
+
+	}
+
+	return vertexPtr;
+}
+
+int Graph::RemoveVertex(unsigned int vertexId)
+{
+	int returnCode = UNSPECIFIED_ERROR;
+
+	Vertex* v = GetVertex(vertexId);
+
+	unsigned int vertexIdx = vertexId - 1;
+
+	if ((unsigned int)this->vertices.size() < vertexId)
+	{
+		//id is not yet added
+		std::cerr << "Graph: ERROR: vertex with id " << vertexId << " is not yet added to the graph. Return NULL." << std::endl;
+		returnCode = UNSPECIFIED_ERROR;
+	}
+	else
+	{
+		//TODO: perhaps simply set elemet->id to invalid ...
+		this->vertices.erase(this->vertices.begin() + vertexIdx);
+		returnCode = 0;
+	}
+
+
+	return returnCode;
 }
 
 Edge* Graph::GetEdge(unsigned int edgeId)
 {
+	// check that the id is in general valid
+	if (edgeId <= EDGE_COUNTER_OFFSET)
+	{
+		std::cerr << "Graph: ERROR: The given id " << edgeId << " is invalid. Edge ids start with " << (EDGE_COUNTER_OFFSET + 1) <<  std::endl;
+		return nullptr;
+	}
 	// defined an offset of 1000
 	// first edge has id 1001. substract the offset and 1 to start with idx 0 of the vector
 	unsigned int edgeIdx = edgeId - EDGE_COUNTER_OFFSET -1;
-	return &(this->edges[edgeIdx]);
+
+	unsigned int numberOfElementInVector = (edgeIdx +1);
+	if ((unsigned int)this->edges.size() < numberOfElementInVector )
+	{
+		// element is not yet added
+		std::cerr << "Graph: ERROR: Edge with id " << edgeId << " is not yet added to the graph. Return NULL." << std::endl;
+		return nullptr;
+	}
+	else
+	{
+		return &(this->edges[edgeIdx]);
+	}
+
 }
 
 int Graph::AddEdge(unsigned int startVertexId, unsigned int endVertexId)
