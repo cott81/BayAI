@@ -71,8 +71,11 @@ Vertex* Graph::GetVertex(unsigned int vertexId)
 
 	unsigned int vertexIdx = vertexId - 1;
 
+	//TODO :  here 0
+	unsigned int a = this->vertices.back().GetId();
+
 	// we have an ordered list. End element has always biggest id
-	if ( vertexId > this->vertices.end()->GetId())
+	if ( vertexId > this->vertices.back().GetId() )
 	{
 		//id is not yet added
 		std::cerr << "Graph: ERROR: vertex with id " << vertexId << " is not yet added to the graph. Return NULL." << std::endl;
@@ -83,8 +86,10 @@ Vertex* Graph::GetVertex(unsigned int vertexId)
 		// use an iterator
 		std::vector<Vertex>::iterator startIter;
 
+		unsigned int b = (unsigned int) this->vertices.size();
+
 		// check if the idx can directly be used (id last element could be bigger as available elements in vector)
-		if ((unsigned int) this->vertices.size() < (vertexIdx + 1) )
+		if ((unsigned int) this->vertices.size() > (vertexIdx + 1) )
 		{
 			startIter = this->vertices.begin() + vertexIdx;
 		}
@@ -104,9 +109,6 @@ Vertex* Graph::GetVertex(unsigned int vertexId)
 		        break;
 		    }
 		}
-
-
-
 	}
 
 	return vertexPtr;
@@ -116,21 +118,46 @@ int Graph::RemoveVertex(unsigned int vertexId)
 {
 	int returnCode = UNSPECIFIED_ERROR;
 
-	Vertex* v = GetVertex(vertexId);
-
 	unsigned int vertexIdx = vertexId - 1;
 
+	// check that there are at least as many elements in the vector as the requested vertexId
 	if ((unsigned int)this->vertices.size() < vertexId)
 	{
 		//id is not yet added
 		std::cerr << "Graph: ERROR: vertex with id " << vertexId << " is not yet added to the graph. Return NULL." << std::endl;
 		returnCode = UNSPECIFIED_ERROR;
 	}
-	else
+	// check if the element is directly at the position (prev removes may have changed the position
+	else if (this->vertices[vertexIdx].GetId() == vertexId)
 	{
 		//TODO: perhaps simply set elemet->id to invalid ...
 		this->vertices.erase(this->vertices.begin() + vertexIdx);
 		returnCode = 0;
+	}
+	// element not at original position
+	else
+	{
+		// use an iterator
+		std::vector<Vertex>::iterator startIter;
+
+		startIter = this->vertices.begin() + vertexIdx;
+
+		// iterate through vector beginning from the expected element location (startIter) towards the beginning
+		std::vector<Vertex>::iterator it;
+		for(it= startIter; it >= this->vertices.begin(); it-- )
+		{
+		    // element found
+		    if((*it).GetId() == vertexId)
+		    {
+		    	// remove found element
+		    	this->vertices.erase(it);
+
+
+
+		        break;
+		    }
+		}
+
 	}
 
 

@@ -29,6 +29,7 @@ TEST(GraphTest, SomethingToTest_test)
 }
 */
 
+
 //
 // Req: A graph should be able to add vertices and provide ids for them.
 //
