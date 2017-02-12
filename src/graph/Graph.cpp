@@ -71,9 +71,6 @@ Vertex* Graph::GetVertex(unsigned int vertexId)
 
 	unsigned int vertexIdx = vertexId - 1;
 
-	//TODO :  here 0
-	unsigned int a = this->vertices.back().GetId();
-
 	// we have an ordered list. End element has always biggest id
 	if ( vertexId > this->vertices.back().GetId() )
 	{
@@ -85,8 +82,6 @@ Vertex* Graph::GetVertex(unsigned int vertexId)
 	{
 		// use an iterator
 		std::vector<Vertex>::iterator startIter;
-
-		unsigned int b = (unsigned int) this->vertices.size();
 
 		// check if the idx can directly be used (id last element could be bigger as available elements in vector)
 		if ((unsigned int) this->vertices.size() > (vertexIdx + 1) )
@@ -151,15 +146,10 @@ int Graph::RemoveVertex(unsigned int vertexId)
 		    {
 		    	// remove found element
 		    	this->vertices.erase(it);
-
-
-
 		        break;
 		    }
 		}
-
 	}
-
 
 	return returnCode;
 }
