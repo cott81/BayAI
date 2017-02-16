@@ -427,6 +427,7 @@ TEST(GraphTest, RemoveVerex_relatedEdgeEliminationExtended)
     EXPECT_EQ(g.GetEdge(edgeId3)->GetEndVertexPtr()->GetId(), idNodeD);
 
 
+    //TODO: fix this ...
 
     graph::Edge* e = g.GetEdge(edgeId4);
     graph::Vertex* v = e->GetStartVertexPtr();
@@ -479,6 +480,44 @@ TEST(GraphTest, RemoveVerex_testAccessOfOtherVerticesAfterRemove_elementsAfter)
     }
 }
 
+
+//
+// Req: Graph should be able to remove vertices such that all other elements are still accessible by index
+//
+TEST(GraphTest, RemoveVerex_multipleRemove)
+{
+	graph::Graph g (graph::ADJACENCY_LIST);
+
+    unsigned int idNodeA = g.AddVertex();
+    unsigned int idNodeB = g.AddVertex();
+    unsigned int idNodeC = g.AddVertex();
+    unsigned int idNodeD = g.AddVertex();
+    unsigned int idNodeE = g.AddVertex();
+
+    g.RemoveVertex(idNodeB);
+    g.RemoveVertex(idNodeA);
+    g.RemoveVertex(idNodeC);
+    g.RemoveVertex(idNodeD);
+
+    EXPECT_EQ(g.GetVertex(idNodeB), nullptr);
+    EXPECT_EQ(g.GetVertex(idNodeA), nullptr);
+    EXPECT_EQ(g.GetVertex(idNodeC), nullptr);
+    EXPECT_EQ(g.GetVertex(idNodeD), nullptr);
+
+    // TODO: bug in implementation : ... can be that the id is bigger than the size !!!
+
+    graph::Vertex* vertexEPtr = g.GetVertex(idNodeE);
+    if (vertexEPtr != nullptr)
+    {
+    	unsigned int c = vertexEPtr->GetId();
+    	EXPECT_EQ(vertexEPtr->GetId(), idNodeE);
+    }
+    else
+    {
+    	EXPECT_EQ(1, 0);
+    }
+}
+
 //
 // Req: Graph should be able to remove edges [with the consequence?]
 //
@@ -486,9 +525,20 @@ TEST(GraphTest, RemoveEdges_normal)
 {
 	graph::Graph g (graph::ADJACENCY_LIST);
 
-    int idNodeA = g.AddVertex();
+    unsigned int idNodeA = g.AddVertex();
+    unsigned int idNodeB = g.AddVertex();
+    unsigned int idNodeC = g.AddVertex();
 
-//    graph::Vertex* vertexPtr = g.GetVertex(100);
+    unsigned int edgeId1 = g.AddEdge(idNodeA, idNodeB);
+    unsigned int edgeId2 = g.AddEdge(idNodeB, idNodeC);
 
-    EXPECT_EQ(0, 1);
+    g.RemoveEdge(edgeId1);
+
+    // check the existence
+    EXPECT_EQ(g.GetEdge(edgeId1), nullptr);
+    EXPECT_NE (g.GetEdge(edgeId2), nullptr);
+
+    // no link between A->B means no outgoing edges from A and no incoming links to B
+    EXPECT_EQ(g.GetVertex(idNodeA)->GetOutEdges().size(), 0);
+    EXPECT_EQ(g.GetVertex(idNodeB)->GetInEdges().size(), 0);
 }

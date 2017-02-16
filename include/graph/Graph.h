@@ -40,7 +40,7 @@ public:
 	int RemoveVertex(unsigned int vertexId);
 
 	int AddEdge(unsigned int startVertexId, unsigned int endVertexId);
-	//int RemoveEdge();
+	int RemoveEdge(unsigned int edgeId);
 
 	Vertex* GetVertex(unsigned int vertexId);
 	Edge* GetEdge(unsigned int edgeId);

@@ -122,6 +122,7 @@ int Graph::RemoveVertex(unsigned int vertexId)
 
 	unsigned int vertexIdx = vertexId - 1;
 
+	// BUG !!!
 	// check that there are at least as many elements in the vector as the requested vertexId
 	if ((unsigned int)this->vertices.size() < vertexId)
 	{
@@ -245,7 +246,6 @@ graph::Edge* Graph::GetEdge(unsigned int edgeId)
 	}
 
 	return edgePtr;
-
 }
 
 int Graph::AddEdge(unsigned int startVertexId, unsigned int endVertexId)
@@ -305,6 +305,34 @@ int Graph::AddEdge(unsigned int startVertexId, unsigned int endVertexId)
 	return edgeId;
 }
 
+int Graph::RemoveEdge(unsigned int edgeId)
+{
+	// get edge
+	graph::Edge* e = GetEdge(edgeId);
+
+	// get involved vertices (start and end)
+	graph::Vertex* startVertexPtr = e->GetStartVertexPtr();
+	graph::Vertex* endVertexPtr = e->GetEndVertexPtr();
+
+	// start: remove this edge in outgoing edges of the start vertex
+	startVertexPtr->RemoveOutgoingEdge(endVertexPtr->GetId());
+
+	// end: remove this edge in incoming edges of the end vertex
+	endVertexPtr->RemoveIncomingEdge(startVertexPtr->GetId());
+
+	//graph remove this edge in graph storage
+	for (auto it = this->edges.begin(); it < this->edges.end(); ++it)
+	{
+		if (it->GetId() == edgeId)
+		{
+			this->edges.erase(it);
+			break;
+		}
+	}
+
+	return 0;
+}
+
 void Graph::PrintVertices()
 {
 	std::cout << "Print vertices for graph:" << std::endl;
@@ -361,7 +389,7 @@ int Graph::RemoveVertexEdges(graph::Vertex& v)
 	int returnCode = 0;
 	//remove all edges in which the vertex it is involved
 
-	// remove edges outgoing for vertex (it)
+	// remove edges outgoing for vertex
 	for (auto edgePtr : v.GetOutEdges())
 	{
 		//get vertex for outgoing edge of it and remove its corresponding incoming edge (double connected list)
