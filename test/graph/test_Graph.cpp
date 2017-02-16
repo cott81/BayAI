@@ -185,7 +185,7 @@ TEST(GraphTest, GetEdge_normal)
 //
 // Req: Graph should return NULL for non existing edges
 //
-TEST(GraphTest, GetEdge_notExisitingEdge)
+TEST(GraphTest, GetEdge_notExistingEdge)
 {
 	graph::Graph g (graph::ADJACENCY_LIST);
 
@@ -236,6 +236,18 @@ TEST(GraphTest, GetVerex_normal)
     graph::Vertex* vertexPtr = g.GetVertex(idNodeA);
 
     EXPECT_EQ(idNodeA, vertexPtr->GetId());
+}
+
+//
+// Req: Graph should return NULL if there was none vertex stored
+//
+TEST(GraphTest, GetVerex_emptyVertexList)
+{
+	graph::Graph g (graph::ADJACENCY_LIST);
+
+    graph::Vertex* vertexPtr = g.GetVertex(100);
+
+    EXPECT_EQ(vertexPtr, nullptr);
 }
 
 //
@@ -375,10 +387,10 @@ TEST(GraphTest, RemoveVerex_relatedEdgeEliminationExtended)
     unsigned int idNodeD = g.AddVertex();
     unsigned int idNodeE = g.AddVertex();
 
-    int edgeId1 = g.AddEdge(idNodeA, idNodeB);
-    int edgeId2 = g.AddEdge(idNodeB, idNodeC);
-    int edgeId3 = g.AddEdge(idNodeA, idNodeD);
-    int edgeId4 = g.AddEdge(idNodeC, idNodeD);
+    unsigned int edgeId1 = g.AddEdge(idNodeA, idNodeB);
+    unsigned int edgeId2 = g.AddEdge(idNodeB, idNodeC);
+    unsigned int edgeId3 = g.AddEdge(idNodeA, idNodeD);
+    unsigned int edgeId4 = g.AddEdge(idNodeC, idNodeD);
 
     g.PrintEdges();
 
@@ -399,12 +411,28 @@ TEST(GraphTest, RemoveVerex_relatedEdgeEliminationExtended)
 
     g.PrintEdges();
 
+    // check expected edge numbers for remaining vertices
     EXPECT_EQ(numInEdgesA, 0);
     EXPECT_EQ(numOutEdgesA, 1);
     EXPECT_EQ(numInEdgesC, 0);
     EXPECT_EQ(numOutEdgesC, 1);
     EXPECT_EQ(numInEdgesD, 2);
     EXPECT_EQ(numOutEdgesD, 0);
+
+    // check remaing edges to point on the correct elements
+    EXPECT_EQ(g.GetEdge(edgeId1), nullptr);
+    EXPECT_EQ(g.GetEdge(edgeId2), nullptr);
+
+    EXPECT_EQ(g.GetEdge(edgeId3)->GetStartVertexPtr()->GetId(), idNodeA);
+    EXPECT_EQ(g.GetEdge(edgeId3)->GetEndVertexPtr()->GetId(), idNodeD);
+
+
+
+    graph::Edge* e = g.GetEdge(edgeId4);
+    graph::Vertex* v = e->GetStartVertexPtr();
+
+    EXPECT_EQ(g.GetEdge(edgeId4)->GetStartVertexPtr()->GetId(), idNodeC);
+    EXPECT_EQ(g.GetEdge(edgeId4)->GetEndVertexPtr()->GetId(), idNodeD);
 }
 
 

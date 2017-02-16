@@ -22,6 +22,8 @@ public:
 	unsigned int GetId(void) {return this->id;}
 	Vertex* GetStartVertexPtr(void) {return this->link.first;}
 	Vertex* GetEndVertexPtr(void) {return this->link.second;}
+	void DecreaseStartVertexPtr();
+	void DecreaseEndVertexPtr();
 
 private:
 	unsigned int id;

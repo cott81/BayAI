@@ -71,8 +71,15 @@ Vertex* Graph::GetVertex(unsigned int vertexId)
 
 	unsigned int vertexIdx = vertexId - 1;
 
+
+	// no elemets in the vector
+	if ((unsigned int)this->vertices.size() == 0)
+	{
+		std::cerr << "Graph: ERROR: Vertex is empty. Return NULL." << std::endl;
+		vertexPtr = nullptr;
+	}
 	// we have an ordered list. End element has always biggest id
-	if ( vertexId > this->vertices.back().GetId() )
+	else if ( vertexId > this->vertices.back().GetId() )
 	{
 		//id is not yet added
 		std::cerr << "Graph: ERROR: vertex with id " << vertexId << " is not yet added to the graph. Return NULL." << std::endl;
@@ -130,6 +137,24 @@ int Graph::RemoveVertex(unsigned int vertexId)
 
 		//TODO: update remaining edges
 
+		// only a single element is removed ... all elements with an id bigger than this needs to point to an index earlier
+
+		//for (Edge e : this->edges)
+		for (int i= 0; i<this->edges.size(); i++)
+		{
+			// this makes the edges point shortly to wrong vertices until the vertex is removed!!!
+			if (this->edges[i].GetStartVertexPtr()->GetId() > vertexIdx )
+			{
+				// update pointer: point to the previous element
+				this->edges[i].DecreaseStartVertexPtr();
+			}
+			if (this->edges[i].GetEndVertexPtr()->GetId() > vertexIdx )
+			{
+				// update pointer: point to the previous element
+				this->edges[i].DecreaseEndVertexPtr();
+			}
+		}
+
 		//TODO: perhaps simply set elemet->id to invalid ...
 		this->vertices.erase(this->vertices.begin() + vertexIdx);
 		returnCode = 0;
@@ -162,8 +187,10 @@ int Graph::RemoveVertex(unsigned int vertexId)
 	return returnCode;
 }
 
-Edge* Graph::GetEdge(unsigned int edgeId)
+graph::Edge* Graph::GetEdge(unsigned int edgeId)
 {
+	graph::Edge* edgePtr = nullptr;
+
 	// check that the id is in general valid
 	if (edgeId <= EDGE_COUNTER_OFFSET)
 	{
@@ -174,17 +201,50 @@ Edge* Graph::GetEdge(unsigned int edgeId)
 	// first edge has id 1001. substract the offset and 1 to start with idx 0 of the vector
 	unsigned int edgeIdx = edgeId - EDGE_COUNTER_OFFSET -1;
 
-	unsigned int numberOfElementInVector = (edgeIdx +1);
-	if ((unsigned int)this->edges.size() < numberOfElementInVector )
+	// check if the vector is empty
+	if ((unsigned int)this->edges.size() == 0)
 	{
 		// element is not yet added
-		std::cerr << "Graph: ERROR: Edge with id " << edgeId << " is not yet added to the graph. Return NULL." << std::endl;
+		std::cerr << "Graph: ERROR: Edge is empty. Return NULL." << std::endl;
 		return nullptr;
+	}
+
+	// we have an ordered list. End element has always biggest id
+	if ( edgeId > this->edges.back().GetId() )
+	{
+		//id is not yet added
+		std::cerr << "Graph: ERROR: edges with id " << edgeId << " is not yet added to the graph. Return NULL." << std::endl;
+		edgePtr = nullptr;
 	}
 	else
 	{
-		return &(this->edges[edgeIdx]);
+		// use an iterator
+		std::vector<Edge>::iterator startIter;
+
+		// check if the idx can directly be used (id last element could be bigger as available elements in vector)
+		if ((unsigned int) this->edges.size() > (edgeIdx + 1) )
+		{
+			startIter = this->edges.begin() + edgeIdx;
+		}
+		else
+		{
+			startIter = this->edges.end();
+		}
+
+		// iterate through vector beginning from the expected element location (startIter) towards the beginning
+		std::vector<Edge>::iterator it;
+		for(it= startIter; it >= this->edges.begin(); it-- )
+		{
+		    // element found
+		    if((*it).GetId() == edgeId)
+		    {
+		    	edgePtr = &*it;
+		        break;
+		    }
+		}
 	}
+
+	return edgePtr;
 
 }
 

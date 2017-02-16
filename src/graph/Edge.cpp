@@ -21,4 +21,14 @@ Edge::Edge(Vertex* originPtr, Vertex* goalPtr, unsigned int edgeId)
 Edge::~Edge() {
 }
 
+void Edge::DecreaseStartVertexPtr()
+{
+	this->link.first--;
+}
+
+void Edge::DecreaseEndVertexPtr()
+{
+	this->link.second--;
+}
+
 } /* namespace graph */
