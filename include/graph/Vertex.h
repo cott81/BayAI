@@ -18,7 +18,9 @@ public:
 	virtual ~Vertex();
 
 	int AddIncomingEdge(Edge* incomingEdgePtr);
+	int RemoveIncomingEdge(unsigned int originVertexId);
 	int AddOutgoingEdge(Edge* outgoingEdgePtr);
+	int RemoveOutgoingEdge(unsigned int endVertexId);
 
 	int PrintInEdges();
 	int PrintOutEdges();

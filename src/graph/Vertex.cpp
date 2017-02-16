@@ -48,6 +48,29 @@ int Vertex::AddIncomingEdge(Edge* incomingEdgePtr)
 	return 0;
 }
 
+int Vertex::RemoveIncomingEdge(unsigned int originVertexId)
+{
+	// check if the originVertex is own id
+	if (originVertexId == this->id)
+	{
+		std::cerr << "Vertex::RemoveIncomingEdge(): ERROR: given edge start vertex id shall not be identical to the id of this vertex" << std::endl;
+		return -1;
+	}
+
+
+	std::vector<graph::Edge*>::iterator it;
+	for (it = this->in_edges.begin(); it < this->in_edges.end(); it++)
+	{
+		if ((*it)->GetStartVertexPtr()->GetId() == originVertexId )
+		{
+			this->in_edges.erase(it);
+			return 0;
+		}
+	}
+
+	return 0;
+}
+
 int Vertex::AddOutgoingEdge(Edge* outgoingEdgePtr)
 {
 	//check if it is really an outgoing edge
@@ -73,6 +96,29 @@ int Vertex::AddOutgoingEdge(Edge* outgoingEdgePtr)
 	}
 
 	this->out_edges.push_back(outgoingEdgePtr);
+
+	return 0;
+}
+
+int Vertex::RemoveOutgoingEdge(unsigned int endVertexId)
+{
+	// check if the originVertex is own id
+	if (endVertexId == this->id)
+	{
+		std::cerr << "Vertex::RemoveOutgoingEdge(): ERROR: given edge end vertex id shall not be identical to the id of this vertex" << std::endl;
+		return -1;
+	}
+
+
+	std::vector<graph::Edge*>::iterator it;
+	for (it = this->out_edges.begin(); it < this->out_edges.end(); it++)
+	{
+		if ((*it)->GetEndVertexPtr()->GetId() == endVertexId)
+		{
+			this->out_edges.erase(it);
+			return 0;
+		}
+	}
 
 	return 0;
 }

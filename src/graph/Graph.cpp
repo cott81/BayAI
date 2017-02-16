@@ -125,6 +125,11 @@ int Graph::RemoveVertex(unsigned int vertexId)
 	// check if the element is directly at the position (prev removes may have changed the position
 	else if (this->vertices[vertexIdx].GetId() == vertexId)
 	{
+
+		RemoveVertexEdges(this->vertices[vertexIdx]);
+
+		//TODO: update remaining edges
+
 		//TODO: perhaps simply set elemet->id to invalid ...
 		this->vertices.erase(this->vertices.begin() + vertexIdx);
 		returnCode = 0;
@@ -133,9 +138,7 @@ int Graph::RemoveVertex(unsigned int vertexId)
 	else
 	{
 		// use an iterator
-		std::vector<Vertex>::iterator startIter;
-
-		startIter = this->vertices.begin() + vertexIdx;
+		 std::vector<Vertex>::iterator startIter = this->vertices.begin() + vertexIdx;
 
 		// iterate through vector beginning from the expected element location (startIter) towards the beginning
 		std::vector<Vertex>::iterator it;
@@ -144,6 +147,11 @@ int Graph::RemoveVertex(unsigned int vertexId)
 		    // element found
 		    if((*it).GetId() == vertexId)
 		    {
+		    	//remove all edges in which the vertex "it" is involved
+		    	RemoveVertexEdges(*it);
+
+		    	//TODO: update remaining edges
+
 		    	// remove found element
 		    	this->vertices.erase(it);
 		        break;
@@ -288,6 +296,38 @@ void Graph::PrintEdges()
 	}
 }
 
+int Graph::RemoveVertexEdges(graph::Vertex& v)
+{
+	int returnCode = 0;
+	//remove all edges in which the vertex it is involved
+
+	// remove edges outgoing for vertex (it)
+	for (auto edgePtr : v.GetOutEdges())
+	{
+		//get vertex for outgoing edge of it and remove its corresponding incoming edge (double connected list)
+		edgePtr->GetEndVertexPtr()->RemoveIncomingEdge(v.GetId());
+	}
+
+	// remove edges incoming
+	for (auto edgePtr : v.GetInEdges())
+	{
+		//get vertex for incoming edge of it and remove its corresponding outgoing edge (double connected list)
+		edgePtr->GetStartVertexPtr()->RemoveOutgoingEdge(v.GetId());
+	}
+
+	// remove edge element (stored in graph)
+	for (auto it2 = this->edges.begin(); it2 < this->edges.end(); ++it2)
+	{
+		if (it2->GetStartVertexPtr()->GetId() == v.GetId()  || it2->GetEndVertexPtr()->GetId() == v.GetId())
+		{
+			this->edges.erase(it2);
+			//update iterator: point to the last valid element such that the increment is able to point to the following element
+			it2--;
+		}
+	}
+
+	return returnCode;
+}
 
 int Graph::SomethingToTest(float in)
 {

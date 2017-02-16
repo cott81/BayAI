@@ -65,6 +65,7 @@ private:
 
 	unsigned int GenerateVertexId();
 	unsigned int GenerateEdgeId();
+	int RemoveVertexEdges(graph::Vertex& v);
 
 };
 

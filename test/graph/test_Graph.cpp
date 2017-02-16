@@ -279,6 +279,7 @@ TEST(GraphTest, GetVerex_afterRemovalAndAdds)
 
     if (vertexPtr == nullptr)
     {
+    	// force test to fail
     	EXPECT_EQ(1, 0);
     }
     else
@@ -330,6 +331,7 @@ TEST(GraphTest, RemoveVerex_normal)
     EXPECT_EQ(vertexPtr, nullptr);
 }
 
+
 //
 // Req: Graph should be able to remove vertices such that the edges from and to the vertex are also removed
 //
@@ -337,12 +339,74 @@ TEST(GraphTest, RemoveVerex_relatedEdgeElimination)
 {
 	graph::Graph g (graph::ADJACENCY_LIST);
 
-    int idNodeA = g.AddVertex();
+    unsigned int idNodeA = g.AddVertex();
+    unsigned int idNodeB = g.AddVertex();
+    unsigned int idNodeC = g.AddVertex();
 
-//    graph::Vertex* vertexPtr = g.GetVertex(100);
+    int edgeId1 = g.AddEdge(idNodeA, idNodeB);
+    int edgeId2 = g.AddEdge(idNodeB, idNodeC);
 
-    EXPECT_EQ(0, 1);
+    g.PrintEdges();
+
+    // A -> B -> C
+
+    g.RemoveVertex(idNodeB);
+
+    // A should not have any edges any more
+    int numEdgesA = g.GetVertex(idNodeA)->GetOutEdges().size();
+    int numEdgesB = g.GetVertex(idNodeC)->GetInEdges().size();
+
+    g.PrintEdges();
+
+    EXPECT_EQ(numEdgesA, 0);
+    EXPECT_EQ(numEdgesB, 0);
 }
+
+//
+// Req: Graph should be able to remove vertices such that the edges from and to the vertex are also removed
+//
+TEST(GraphTest, RemoveVerex_relatedEdgeEliminationExtended)
+{
+	graph::Graph g (graph::ADJACENCY_LIST);
+
+    unsigned int idNodeA = g.AddVertex();
+    unsigned int idNodeB = g.AddVertex();
+    unsigned int idNodeC = g.AddVertex();
+    unsigned int idNodeD = g.AddVertex();
+    unsigned int idNodeE = g.AddVertex();
+
+    int edgeId1 = g.AddEdge(idNodeA, idNodeB);
+    int edgeId2 = g.AddEdge(idNodeB, idNodeC);
+    int edgeId3 = g.AddEdge(idNodeA, idNodeD);
+    int edgeId4 = g.AddEdge(idNodeC, idNodeD);
+
+    g.PrintEdges();
+
+    // A -> B -> C
+    //   -> D <-
+
+    g.RemoveVertex(idNodeB);
+
+    // A should not have any edges any more
+    int numInEdgesA = g.GetVertex(idNodeA)->GetInEdges().size();
+    int numOutEdgesA = g.GetVertex(idNodeA)->GetOutEdges().size();
+
+    int numInEdgesC = g.GetVertex(idNodeC)->GetInEdges().size();
+    int numOutEdgesC = g.GetVertex(idNodeC)->GetOutEdges().size();
+
+    int numInEdgesD = g.GetVertex(idNodeD)->GetInEdges().size();
+    int numOutEdgesD = g.GetVertex(idNodeD)->GetOutEdges().size();
+
+    g.PrintEdges();
+
+    EXPECT_EQ(numInEdgesA, 0);
+    EXPECT_EQ(numOutEdgesA, 1);
+    EXPECT_EQ(numInEdgesC, 0);
+    EXPECT_EQ(numOutEdgesC, 1);
+    EXPECT_EQ(numInEdgesD, 2);
+    EXPECT_EQ(numOutEdgesD, 0);
+}
+
 
 //
 // Req: Graph should be able to remove vertices such that all other elements are still accessible by index
