@@ -18,7 +18,7 @@ using ::testing::Ge;
 //
 // RQ1.1: A graph should be able to add vertices and provide ids for them.
 //
-TEST(GraphTest, AddVertex_normal)
+TEST(CoolGraphImpl, RQ1_AddVertex_normal)
 {
 	graph::Graph g (graph::ADJACENCY_LIST);
 
@@ -33,7 +33,7 @@ TEST(GraphTest, AddVertex_normal)
 //
 // RQ1.1: Vertex ids should increase with every added vertex by 1 starting with 1.
 //
-TEST(GraphTest, AddVertex_increasingIDs)
+TEST(CoolGraphImpl, RQ1_AddVertex_increasingIDs)
 {
 	graph::Graph g (graph::ADJACENCY_LIST);
 
@@ -48,7 +48,7 @@ TEST(GraphTest, AddVertex_increasingIDs)
 //
 // RQ1.2: A graph should be able to define edges between two nodes. The edge should specify its start and end node.
 //
-TEST(GraphTest, AddEdge_normal)
+TEST(CoolGraphImpl, RQ1_AddEdge_normal)
 {
 	graph::Graph g (graph::ADJACENCY_LIST);
 
@@ -68,7 +68,7 @@ TEST(GraphTest, AddEdge_normal)
 //
 // RQ1.2: it should not be possible to add identical edges
 //
-TEST(GraphTest, AddEdge_identicalEdge)
+TEST(CoolGraphImpl, RQ1_AddEdge_identicalEdge)
 {
 	graph::Graph g (graph::ADJACENCY_LIST);
 
@@ -85,7 +85,7 @@ TEST(GraphTest, AddEdge_identicalEdge)
 //
 // RQ1.2: Edges in the graph need to reference existing verices. (both not existing)
 //
-TEST(GraphTest, AddEdge_forBothNotExistingVertices)
+TEST(CoolGraphImpl, RQ1_AddEdge_forBothNotExistingVertices)
 {
 	graph::Graph g (graph::ADJACENCY_LIST);
 
@@ -99,7 +99,7 @@ TEST(GraphTest, AddEdge_forBothNotExistingVertices)
 //
 // RQ1.2: Edges in the graph need to reference existing verices. (both identical and not existing)
 //
-TEST(GraphTest, AddEdge_forIdenticalNotExistingVertices)
+TEST(CoolGraphImpl, RQ1_AddEdge_forIdenticalNotExistingVertices)
 {
 	graph::Graph g (graph::ADJACENCY_LIST);
 
@@ -113,7 +113,7 @@ TEST(GraphTest, AddEdge_forIdenticalNotExistingVertices)
 //
 // RQ1.2: Edges in the graph need to reference existing verices. (not existing start)
 //
-TEST(GraphTest, AddEdge_forNotExistingEndVertices)
+TEST(CoolGraphImpl, RQ1_AddEdge_forNotExistingEndVertices)
 {
 	graph::Graph g (graph::ADJACENCY_LIST);
 
@@ -130,7 +130,7 @@ TEST(GraphTest, AddEdge_forNotExistingEndVertices)
 //
 // RQ1.2: Edges in the graph need to reference existing verices. (not existing end)
 //
-TEST(GraphTest, AddEdge_forNotExistingStartVertices)
+TEST(CoolGraphImpl, RQ1_AddEdge_forNotExistingStartVertices)
 {
 	graph::Graph g (graph::ADJACENCY_LIST);
 
@@ -148,7 +148,7 @@ TEST(GraphTest, AddEdge_forNotExistingStartVertices)
 //
 // RQ: Graph should be able to return edges
 //
-TEST(GraphTest, GetEdge_normal)
+TEST(CoolGraphImpl, RQ1_GetEdge_normal)
 {
 	graph::Graph g (graph::ADJACENCY_LIST);
 
@@ -170,7 +170,7 @@ TEST(GraphTest, GetEdge_normal)
 //
 // RQ: Graph should return NULL for non existing edges
 //
-TEST(GraphTest, GetEdge_notExistingEdge)
+TEST(CoolGraphImpl, RQ1_GetEdge_notExistingEdge)
 {
 	graph::Graph g (graph::ADJACENCY_LIST);
 
@@ -187,7 +187,7 @@ TEST(GraphTest, GetEdge_notExistingEdge)
 //
 // RQ: Graph should return NULL for invalid edge id (all below the defined id offset)
 //
-TEST(GraphTest, GetEdge_forInvalidEdgeId)
+TEST(CoolGraphImpl, RQ1_GetEdge_forInvalidEdgeId)
 {
 	graph::Graph g (graph::ADJACENCY_LIST);
 
@@ -212,7 +212,7 @@ TEST(GraphTest, GetEdge_forInvalidEdgeId)
 //
 // RQ: Graph should be able to return vertices
 //
-TEST(GraphTest, GetVerex_normal)
+TEST(CoolGraphImpl, RQ1_GetVerex_normal)
 {
 	graph::Graph g (graph::ADJACENCY_LIST);
 
@@ -226,7 +226,7 @@ TEST(GraphTest, GetVerex_normal)
 //
 // RQ: Graph should return NULL if there was none vertex stored
 //
-TEST(GraphTest, GetVerex_emptyVertexList)
+TEST(CoolGraphImpl, RQ1_GetVerex_emptyVertexList)
 {
 	graph::Graph g (graph::ADJACENCY_LIST);
 
@@ -238,7 +238,7 @@ TEST(GraphTest, GetVerex_emptyVertexList)
 //
 // RQ: Graph should return NULL for non existing vertices
 //
-TEST(GraphTest, GetVerex_notExisitingVertex)
+TEST(CoolGraphImpl, RQ1_GetVerex_notExisitingVertex)
 {
 	graph::Graph g (graph::ADJACENCY_LIST);
 

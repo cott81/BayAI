@@ -19,7 +19,7 @@ using ::testing::Ge;
 //
 // RQ2.1: Graph should return NULL for non existing vertices
 //
-TEST(GraphTest, GetVerex_afterRemovalAndAdds)
+TEST(CoolGraphImpl, RQ2_GetVerex_afterRemovalAndAdds)
 {
 	graph::Graph g (graph::ADJACENCY_LIST);
 
@@ -56,7 +56,7 @@ TEST(GraphTest, GetVerex_afterRemovalAndAdds)
 //
 // RQ2.1: Graph should be able to remove vertices [with the consequence?] such that the vertex is not any more accessible (return NULL)
 //
-TEST(GraphTest, RemoveVerex_normal)
+TEST(CoolGraphImpl, RQ2_RemoveVerex_normal)
 {
 	graph::Graph g (graph::ADJACENCY_LIST);
 
@@ -75,7 +75,7 @@ TEST(GraphTest, RemoveVerex_normal)
 //
 // RQ2.1: Graph should be able to remove vertices such that the edges from and to the vertex are also removed
 //
-TEST(GraphTest, RemoveVerex_relatedEdgeElimination)
+TEST(CoolGraphImpl, RQ2_RemoveVerex_relatedEdgeElimination)
 {
 	graph::Graph g (graph::ADJACENCY_LIST);
 
@@ -86,7 +86,7 @@ TEST(GraphTest, RemoveVerex_relatedEdgeElimination)
     int edgeId1 = g.AddEdge(idNodeA, idNodeB);
     int edgeId2 = g.AddEdge(idNodeB, idNodeC);
 
-    g.PrintEdges();
+    //g.PrintEdges();
 
     // A -> B -> C
 
@@ -105,7 +105,7 @@ TEST(GraphTest, RemoveVerex_relatedEdgeElimination)
 //
 // RQ2.1: Graph should be able to remove vertices such that the edges from and to the vertex are also removed
 //
-TEST(GraphTest, RemoveVerex_relatedEdgeEliminationExtended)
+TEST(CoolGraphImpl, RQ2_RemoveVerex_relatedEdgeEliminationExtended)
 {
 	graph::Graph g (graph::ADJACENCY_LIST);
 
@@ -158,7 +158,7 @@ TEST(GraphTest, RemoveVerex_relatedEdgeEliminationExtended)
 //
 // RQ2.1: Graph should be able to remove vertices such that all other elements are still accessible by index
 //
-TEST(GraphTest, RemoveVerex_testAccessOfOtherVerticesAfterRemove_elementsBefore)
+TEST(CoolGraphImpl, RQ2_RemoveVerex_testAccessOfOtherVerticesAfterRemove_elementsBefore)
 {
 	graph::Graph g (graph::ADJACENCY_LIST);
 
@@ -176,7 +176,7 @@ TEST(GraphTest, RemoveVerex_testAccessOfOtherVerticesAfterRemove_elementsBefore)
 //
 // RQ2.1: Graph should be able to remove vertices such that all other elements are still accessible by index
 //
-TEST(GraphTest, RemoveVerex_testAccessOfOtherVerticesAfterRemove_elementsAfter)
+TEST(CoolGraphImpl, RQ2_RemoveVerex_testAccessOfOtherVerticesAfterRemove_elementsAfter)
 {
 	graph::Graph g (graph::ADJACENCY_LIST);
 
@@ -202,7 +202,7 @@ TEST(GraphTest, RemoveVerex_testAccessOfOtherVerticesAfterRemove_elementsAfter)
 //
 // RQ2.1: Graph should be able to remove vertices such that all other elements are still accessible by index
 //
-TEST(GraphTest, RemoveVerex_multipleRemove)
+TEST(CoolGraphImpl, RQ2_RemoveVerex_multipleRemove)
 {
 	graph::Graph g (graph::ADJACENCY_LIST);
 
@@ -239,7 +239,7 @@ TEST(GraphTest, RemoveVerex_multipleRemove)
 //
 // RQ2.2: Graph should be able to remove edges [with the consequence?]
 //
-TEST(GraphTest, RemoveEdges_normal)
+TEST(CoolGraphImpl, RQ2_RemoveEdges_normal)
 {
 	graph::Graph g (graph::ADJACENCY_LIST);
 

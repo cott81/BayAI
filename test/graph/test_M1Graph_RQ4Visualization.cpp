@@ -19,7 +19,7 @@ using ::testing::Ge;
 //
 // RQ4: Graph should be able return a DOT description
 //
-TEST(GraphTest, GenerateDOTDescription_normal)
+TEST(CoolGraphImpl, RQ4_GenerateDOTDescription_normal)
 {
 	graph::Graph g (graph::ADJACENCY_LIST);
 
