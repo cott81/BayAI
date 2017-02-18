@@ -144,12 +144,12 @@ int Graph::RemoveVertex(unsigned int vertexId)
 		for (int i= 0; i<this->edges.size(); i++)
 		{
 			// this makes the edges point shortly to wrong vertices until the vertex is removed!!!
-			if (this->edges[i].GetStartVertexPtr()->GetId() > vertexIdx )
+			if (this->edges[i].GetStartVertexPtr()->GetId() > vertexId )
 			{
 				// update pointer: point to the previous element
 				this->edges[i].DecreaseStartVertexPtr();
 			}
-			if (this->edges[i].GetEndVertexPtr()->GetId() > vertexIdx )
+			if (this->edges[i].GetEndVertexPtr()->GetId() > vertexId )
 			{
 				// update pointer: point to the previous element
 				this->edges[i].DecreaseEndVertexPtr();
@@ -229,12 +229,13 @@ graph::Edge* Graph::GetEdge(unsigned int edgeId)
 		}
 		else
 		{
-			startIter = this->edges.end();
+			// startIter points to the last element (end -1)
+			startIter = this->edges.end() - 1;
 		}
 
 		// iterate through vector beginning from the expected element location (startIter) towards the beginning
 		std::vector<Edge>::iterator it;
-		for(it= startIter; it >= this->edges.begin(); it-- )
+		for(it= startIter; it >= this->edges.begin(); --it)
 		{
 		    // element found
 		    if((*it).GetId() == edgeId)
@@ -390,6 +391,7 @@ int Graph::RemoveVertexEdges(graph::Vertex& v)
 	//remove all edges in which the vertex it is involved
 
 	// remove edges outgoing for vertex
+	// TODO: eliminate double iteration ... use Remove all function in vertex?
 	for (auto edgePtr : v.GetOutEdges())
 	{
 		//get vertex for outgoing edge of it and remove its corresponding incoming edge (double connected list)
@@ -399,6 +401,8 @@ int Graph::RemoveVertexEdges(graph::Vertex& v)
 	// remove edges incoming
 	for (auto edgePtr : v.GetInEdges())
 	{
+		// TODO: eliminate double iteration ... use Remove all function in vertex?
+
 		//get vertex for incoming edge of it and remove its corresponding outgoing edge (double connected list)
 		edgePtr->GetStartVertexPtr()->RemoveOutgoingEdge(v.GetId());
 	}
