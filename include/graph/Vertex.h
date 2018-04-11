@@ -25,11 +25,9 @@ public:
 	int PrintInEdges();
 	int PrintOutEdges();
 
-	unsigned int GetId(void) {return this->id;}
-	std::vector<graph::Edge*> GetOutEdges(void) {return this->out_edges;}
-	std::vector<graph::Edge*> GetInEdges(void) {return this->in_edges;}
-	std::vector<graph::Edge*> GetEdges(void);
-
+	inline unsigned int GetId(void) {return this->id;}
+	inline std::vector<graph::Edge*> GetOutEdges(void) {return this->out_edges;}
+	inline std::vector<graph::Edge*> GetInEdges(void) {return this->in_edges;}
 
 private:
 	std::vector<graph::Edge*> out_edges;		// outgoing edges store the edge objects

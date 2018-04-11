@@ -119,44 +119,28 @@ Vertex* Graph::GetVertex(unsigned int vertexId)
 int Graph::RemoveVertex(unsigned int vertexId)
 {
 	int returnCode = UNSPECIFIED_ERROR;
-
 	unsigned int vertexIdx = vertexId - 1;
 
-	// BUG !!!
-	// check that there are at least as many elements in the vector as the requested vertexId
-	if ((unsigned int)this->vertices.size() < vertexId)
+	// general error checks to avoid unnecessary checks
+	if (this->vertices.size() == 0)
 	{
-		//id is not yet added
-		std::cerr << "Graph: ERROR: vertex with id " << vertexId << " is not yet added to the graph. Return NULL." << std::endl;
+		std::cerr << "Graph: ERROR: No vertices in graph. Removal of vertex id " << vertexId << " not possible."  <<  std::endl;
 		returnCode = UNSPECIFIED_ERROR;
+		return returnCode;
 	}
-	// check if the element is directly at the position (prev removes may have changed the position
-	else if (this->vertices[vertexIdx].GetId() == vertexId)
+	else if (vertexId > this->vertices.back().GetId())
 	{
+		std::cerr << "Graph: ERROR: Vertex with id "<< vertexId << " not yet in graph. Removal of vertex not possible."  <<  std::endl;
+		returnCode = UNSPECIFIED_ERROR;
+		return returnCode;
+	}
 
+	if ( ((unsigned int)this->vertices.size() > vertexId) && (this->vertices[vertexIdx].GetId() == vertexId) )
+	{
 		RemoveVertexEdges(this->vertices[vertexIdx]);
 
-		//TODO: update remaining edges
+		UpdateRemaingEdgesAfterVertexRemoval(vertexId);
 
-		// only a single element is removed ... all elements with an id bigger than this needs to point to an index earlier
-
-		//for (Edge e : this->edges)
-		for (int i= 0; i<this->edges.size(); i++)
-		{
-			// this makes the edges point shortly to wrong vertices until the vertex is removed!!!
-			if (this->edges[i].GetStartVertexPtr()->GetId() > vertexId )
-			{
-				// update pointer: point to the previous element
-				this->edges[i].DecreaseStartVertexPtr();
-			}
-			if (this->edges[i].GetEndVertexPtr()->GetId() > vertexId )
-			{
-				// update pointer: point to the previous element
-				this->edges[i].DecreaseEndVertexPtr();
-			}
-		}
-
-		//TODO: perhaps simply set elemet->id to invalid ...
 		this->vertices.erase(this->vertices.begin() + vertexIdx);
 		returnCode = 0;
 	}
@@ -176,7 +160,7 @@ int Graph::RemoveVertex(unsigned int vertexId)
 		    	//remove all edges in which the vertex "it" is involved
 		    	RemoveVertexEdges(*it);
 
-		    	//TODO: update remaining edges
+		    	UpdateRemaingEdgesAfterVertexRemoval(vertexId);
 
 		    	// remove found element
 		    	this->vertices.erase(it);
@@ -419,6 +403,30 @@ int Graph::RemoveVertexEdges(graph::Vertex& v)
 	}
 
 	return returnCode;
+}
+
+// remaining edges need to be updated to point again to the correct vector element (following vertex elements take the place of the removed one)
+int Graph::UpdateRemaingEdgesAfterVertexRemoval(unsigned int vertexId)
+{
+	int returnCode = 0;
+
+	// only a single element is removed ... all elements with an id bigger than this needs to point to an index earlier
+	for (unsigned int i= 0; i<this->edges.size(); i++)
+	{
+		// this makes the edges point shortly to wrong vertices until the vertex is removed!!!
+		if (this->edges[i].GetStartVertexPtr()->GetId() > vertexId )
+		{
+			// update pointer: point to the previous element
+			this->edges[i].DecreaseStartVertexPtr();
+		}
+		if (this->edges[i].GetEndVertexPtr()->GetId() > vertexId )
+		{
+			// update pointer: point to the previous element
+			this->edges[i].DecreaseEndVertexPtr();
+		}
+	}
+	return returnCode;
+
 }
 
 int Graph::SomethingToTest(float in)

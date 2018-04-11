@@ -17,7 +17,6 @@ Vertex::Vertex(unsigned int id) {
 }
 
 Vertex::~Vertex() {
-	// TODO Auto-generated destructor stub
 }
 
 int Vertex::AddIncomingEdge(Edge* incomingEdgePtr)
@@ -121,15 +120,6 @@ int Vertex::RemoveOutgoingEdge(unsigned int endVertexId)
 	}
 
 	return 0;
-}
-
-std::vector<graph::Edge*> Vertex::GetEdges(void)
-{
-	//TODO: needs to be tested
-
-	std::vector<graph::Edge*> edges(this->out_edges);
-	edges.insert(edges.end(), this->in_edges.begin(), this->in_edges.end());
-	return edges;
 }
 
 int Vertex::PrintInEdges()

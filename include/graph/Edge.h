@@ -19,9 +19,9 @@ public:
 	Edge(Vertex* origin, Vertex* goal, unsigned int edgeId);
 	virtual ~Edge();
 
-	unsigned int GetId(void) {return this->id;}
-	Vertex* GetStartVertexPtr(void) {return this->link.first;}
-	Vertex* GetEndVertexPtr(void) {return this->link.second;}
+	inline unsigned int GetId(void) {return this->id;}
+	inline Vertex* GetStartVertexPtr(void) {return this->link.first;}
+	inline Vertex* GetEndVertexPtr(void) {return this->link.second;}
 	void DecreaseStartVertexPtr();
 	void DecreaseEndVertexPtr();
 

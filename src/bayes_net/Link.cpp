@@ -9,12 +9,10 @@
 namespace bayes_net {
 
 Link::Link() {
-	// TODO Auto-generated constructor stub
 
 }
 
 Link::~Link() {
-	// TODO Auto-generated destructor stub
 }
 
 } /* namespace bayes_net */

@@ -45,14 +45,15 @@ public:
 	Vertex* GetVertex(unsigned int vertexId);
 	Edge* GetEdge(unsigned int edgeId);
 
-	void PrintVertices();
 	std::string GenerateDOTDescription();
 	void VisualizeDOTGraph(std::string name = "out");
+
+	void PrintVertices();
 	void PrintEdges();
 
 	int SomethingToTest(float in);
 
-	const unsigned int GetEdgeIdOffset(void){return EDGE_COUNTER_OFFSET;};
+	inline const unsigned int GetEdgeIdOffset(void){return EDGE_COUNTER_OFFSET;};
 
 private:
 	unsigned int vertexCounter;
@@ -63,9 +64,10 @@ private:
 	std::vector<Vertex> vertices;
 	std::vector<Edge> edges;
 
-	unsigned int GenerateVertexId();
-	unsigned int GenerateEdgeId();
+	inline unsigned int GenerateVertexId();
+	inline unsigned int GenerateEdgeId();
 	int RemoveVertexEdges(graph::Vertex& v);
+	int UpdateRemaingEdgesAfterVertexRemoval(unsigned int vertexId);
 
 };
 

@@ -10,12 +10,10 @@
 namespace graph {
 
 A::A() {
-	// TODO Auto-generated constructor stub
 
 }
 
 A::~A() {
-	// TODO Auto-generated destructor stub
 }
 
 /*
