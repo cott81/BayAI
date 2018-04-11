@@ -26,3 +26,9 @@
 *.exe
 *.out
 *.app
+
+# visual studion code build files
+build
+
+# visual studio code config
+.vscode
