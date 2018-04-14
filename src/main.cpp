@@ -22,7 +22,6 @@ graph::Graph generate(void)
 
     g.PrintVertices();
 
-
     g.AddEdge(idNodeA, idNodeB);
     g.AddEdge(idNodeA, idNodeC);
     g.AddEdge(idNodeB, idNodeC);
@@ -36,7 +35,7 @@ graph::Graph generate(void)
     return g;
 }
 
-int main(int    argc, char** argv)
+int main(int argc, char **argv)
 {
 	cout << "/*" << endl; // start comment for DOT
     cout << "Test Application: ..." << endl;
@@ -49,7 +48,6 @@ int main(int    argc, char** argv)
     cout << g.GenerateDOTDescription() << std::endl;
 
     g.VisualizeDOTGraph("test");
-
 
     return 0;
 }
