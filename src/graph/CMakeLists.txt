@@ -2,7 +2,7 @@
 set (GRAPH_SRC 
 	Edge.cpp 
 	Vertex.cpp
-	Graph.cpp
+	#Graph.cpp
 	A.cpp
 	)
 

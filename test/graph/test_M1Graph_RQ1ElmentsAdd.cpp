@@ -8,7 +8,11 @@
 #include <gtest/gtest.h>
 #include <gmock/gmock.h>
 
-#include "graph/Graph.h"
+//#include "graph/Graph.h"
+#include "graph/GraphTest.h"
+
+#include "Vertex.h"
+#include "Edge.h"
 
 using ::testing::AtLeast;
 using ::testing::Return;
@@ -20,7 +24,7 @@ using ::testing::Ge;
 //
 TEST(CoolGraphImpl, RQ1_AddVertex_normal)
 {
-	graph::Graph g (graph::ADJACENCY_LIST);
+	graph::GraphTest<graph::Vertex, graph::Edge> g (graph::ADJACENCY_LIST);
 
 	unsigned int vertexId = g.AddVertex();
 
@@ -35,7 +39,7 @@ TEST(CoolGraphImpl, RQ1_AddVertex_normal)
 //
 TEST(CoolGraphImpl, RQ1_AddVertex_increasingIDs)
 {
-	graph::Graph g (graph::ADJACENCY_LIST);
+	graph::GraphTest<graph::Vertex, graph::Edge> g (graph::ADJACENCY_LIST);
 
 	unsigned int vertexId = -1;
 	for (int i=0; i < 15; i++)
@@ -50,7 +54,7 @@ TEST(CoolGraphImpl, RQ1_AddVertex_increasingIDs)
 //
 TEST(CoolGraphImpl, RQ1_AddEdge_normal)
 {
-	graph::Graph g (graph::ADJACENCY_LIST);
+	graph::GraphTest<graph::Vertex, graph::Edge> g (graph::ADJACENCY_LIST);
 
     int idNodeA = g.AddVertex();
     int idNodeB = g.AddVertex();
@@ -70,7 +74,7 @@ TEST(CoolGraphImpl, RQ1_AddEdge_normal)
 //
 TEST(CoolGraphImpl, RQ1_AddEdge_identicalEdge)
 {
-	graph::Graph g (graph::ADJACENCY_LIST);
+	graph::GraphTest<graph::Vertex, graph::Edge> g (graph::ADJACENCY_LIST);
 
     int idNodeA = g.AddVertex();
     int idNodeB = g.AddVertex();
@@ -87,7 +91,7 @@ TEST(CoolGraphImpl, RQ1_AddEdge_identicalEdge)
 //
 TEST(CoolGraphImpl, RQ1_AddEdge_forBothNotExistingVertices)
 {
-	graph::Graph g (graph::ADJACENCY_LIST);
+	graph::GraphTest<graph::Vertex, graph::Edge> g (graph::ADJACENCY_LIST);
 
 	int edgeId = 0;
 
@@ -101,7 +105,7 @@ TEST(CoolGraphImpl, RQ1_AddEdge_forBothNotExistingVertices)
 //
 TEST(CoolGraphImpl, RQ1_AddEdge_forIdenticalNotExistingVertices)
 {
-	graph::Graph g (graph::ADJACENCY_LIST);
+	graph::GraphTest<graph::Vertex, graph::Edge> g (graph::ADJACENCY_LIST);
 
 	int edgeId = 0;
 
@@ -115,7 +119,7 @@ TEST(CoolGraphImpl, RQ1_AddEdge_forIdenticalNotExistingVertices)
 //
 TEST(CoolGraphImpl, RQ1_AddEdge_forNotExistingEndVertices)
 {
-	graph::Graph g (graph::ADJACENCY_LIST);
+	graph::GraphTest<graph::Vertex, graph::Edge> g (graph::ADJACENCY_LIST);
 
 	int edgeId = 0;
 
@@ -132,7 +136,7 @@ TEST(CoolGraphImpl, RQ1_AddEdge_forNotExistingEndVertices)
 //
 TEST(CoolGraphImpl, RQ1_AddEdge_forNotExistingStartVertices)
 {
-	graph::Graph g (graph::ADJACENCY_LIST);
+	graph::GraphTest<graph::Vertex, graph::Edge> g (graph::ADJACENCY_LIST);
 
 	int edgeId = 0;
 
@@ -150,7 +154,7 @@ TEST(CoolGraphImpl, RQ1_AddEdge_forNotExistingStartVertices)
 //
 TEST(CoolGraphImpl, RQ1_GetEdge_normal)
 {
-	graph::Graph g (graph::ADJACENCY_LIST);
+	graph::GraphTest<graph::Vertex, graph::Edge> g (graph::ADJACENCY_LIST);
 
 	int edgeId = 0;
 
@@ -172,7 +176,7 @@ TEST(CoolGraphImpl, RQ1_GetEdge_normal)
 //
 TEST(CoolGraphImpl, RQ1_GetEdge_notExistingEdge)
 {
-	graph::Graph g (graph::ADJACENCY_LIST);
+	graph::GraphTest<graph::Vertex, graph::Edge> g (graph::ADJACENCY_LIST);
 
 	int edgeId = 0;
 
@@ -189,7 +193,7 @@ TEST(CoolGraphImpl, RQ1_GetEdge_notExistingEdge)
 //
 TEST(CoolGraphImpl, RQ1_GetEdge_forInvalidEdgeId)
 {
-	graph::Graph g (graph::ADJACENCY_LIST);
+	graph::GraphTest<graph::Vertex, graph::Edge> g (graph::ADJACENCY_LIST);
 
 	int edgeId = 0;
 
@@ -214,7 +218,7 @@ TEST(CoolGraphImpl, RQ1_GetEdge_forInvalidEdgeId)
 //
 TEST(CoolGraphImpl, RQ1_GetVerex_normal)
 {
-	graph::Graph g (graph::ADJACENCY_LIST);
+	graph::GraphTest<graph::Vertex, graph::Edge> g (graph::ADJACENCY_LIST);
 
     int idNodeA = g.AddVertex();
 
@@ -228,7 +232,7 @@ TEST(CoolGraphImpl, RQ1_GetVerex_normal)
 //
 TEST(CoolGraphImpl, RQ1_GetVerex_emptyVertexList)
 {
-	graph::Graph g (graph::ADJACENCY_LIST);
+	graph::GraphTest<graph::Vertex, graph::Edge> g (graph::ADJACENCY_LIST);
 
     graph::Vertex* vertexPtr = g.GetVertex(100);
 
@@ -240,7 +244,7 @@ TEST(CoolGraphImpl, RQ1_GetVerex_emptyVertexList)
 //
 TEST(CoolGraphImpl, RQ1_GetVerex_notExisitingVertex)
 {
-	graph::Graph g (graph::ADJACENCY_LIST);
+	graph::GraphTest<graph::Vertex, graph::Edge> g (graph::ADJACENCY_LIST);
 
     int idNodeA = g.AddVertex();
 

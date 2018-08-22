@@ -10,7 +10,6 @@
 
 namespace graph {
 
-
 Vertex::Vertex(unsigned int id) {
 //	std::cout << "Vertex: DEBUG: create vertex with id: "<< id << std::endl;
 	this->id = id;

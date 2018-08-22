@@ -20,4 +20,5 @@ int main(int argc, char **argv) {
     testing::InitGoogleMock(&argc, argv);
     std::cout << "start test"<<std::endl;
     return RUN_ALL_TESTS();
+    std::cout << "end test"<<std::endl;
 }

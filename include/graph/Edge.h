@@ -17,13 +17,17 @@ class Vertex; //forward declaration
 class Edge {
 public:
 	Edge(Vertex* origin, Vertex* goal, unsigned int edgeId);
+	//Edge(Vertex* origin, Vertex* goal);
 	virtual ~Edge();
 
-	inline unsigned int GetId(void) {return this->id;}
+	inline unsigned int GetId(void) {return this->id;}	
 	inline Vertex* GetStartVertexPtr(void) {return this->link.first;}
 	inline Vertex* GetEndVertexPtr(void) {return this->link.second;}
 	void DecreaseStartVertexPtr();
 	void DecreaseEndVertexPtr();
+
+	// move to private (need friend for this)
+	void SetEdgeId(unsigned int edgeId) {this->id = edgeId;}
 
 private:
 	unsigned int id;
