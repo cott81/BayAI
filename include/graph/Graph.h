@@ -61,8 +61,8 @@ private:
 	const unsigned int EDGE_COUNTER_OFFSET = 1000;
 
 	//adjacency list
-	std::vector<Vertex> vertices;
-	std::vector<Edge> edges;
+	std::vector<Vertex*> vertices;
+	std::vector<Edge*> edges;
 
 	inline unsigned int GenerateVertexId();
 	inline unsigned int GenerateEdgeId();
