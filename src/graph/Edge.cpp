@@ -18,17 +18,8 @@ Edge::Edge(Vertex* originPtr, Vertex* goalPtr, unsigned int edgeId)
 	this->id = edgeId;
 }
 
-Edge::~Edge() {
-}
-
-void Edge::DecreaseStartVertexPtr()
+Edge::~Edge() 
 {
-	this->link.first--;
-}
-
-void Edge::DecreaseEndVertexPtr()
-{
-	this->link.second--;
 }
 
 } /* namespace graph */

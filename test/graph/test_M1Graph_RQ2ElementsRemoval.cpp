@@ -125,7 +125,10 @@ TEST(CoolGraphImpl, RQ2_RemoveVerex_relatedEdgeEliminationExtended)
 
     g.RemoveVertex(idNodeB);
 
-    // A should not have any edges any more
+    // A         C
+    //   -> D <-
+
+    // A should not have any edges any more ... no only the edge to D
     int numInEdgesA = g.GetVertex(idNodeA)->GetInEdges().size();
     int numOutEdgesA = g.GetVertex(idNodeA)->GetOutEdges().size();
 
@@ -260,3 +263,38 @@ TEST(CoolGraphImpl, RQ2_RemoveEdges_normal)
     EXPECT_EQ(g.GetVertex(idNodeA)->GetOutEdges().size(), 0);
     EXPECT_EQ(g.GetVertex(idNodeB)->GetInEdges().size(), 0);
 }
+
+//
+// RQ2.2: Graph should be able to remove edges multiple edges and clean the memory 
+//
+TEST(CoolGraphImpl, RQ2_RemoveEdges_2RemovesOnlyOneLeft)
+{
+    //Found problem (segmentation fault in destructor) occurs when there is only 1 edges left after removals.
+    // reason; remove function has first erasted an element -> iterator changed -> delete on _changed_ iterator
+    // test stays to check this in the future. Failure -> segmentation fault in constructor
+
+	graph::Graph g (graph::ADJACENCY_LIST);
+
+    unsigned int idNodeA = g.AddVertex();
+    unsigned int idNodeB = g.AddVertex();
+    unsigned int idNodeC = g.AddVertex();
+
+    unsigned int edgeId1 = g.AddEdge(idNodeA, idNodeB);
+    unsigned int edgeId2 = g.AddEdge(idNodeB, idNodeC);
+    unsigned int edgeId3 = g.AddEdge(idNodeA, idNodeC);
+
+    g.RemoveEdge(edgeId1);
+    g.RemoveEdge(edgeId3);
+
+    // check the existence
+    EXPECT_EQ(g.GetEdge(edgeId1), nullptr);
+    EXPECT_NE (g.GetEdge(edgeId2), nullptr);
+    EXPECT_EQ(g.GetEdge(edgeId3), nullptr);
+
+    // no link between A->B and A->C means no outgoing edges from A and no incoming links to B, 1 incoming to C
+    EXPECT_EQ(g.GetVertex(idNodeA)->GetOutEdges().size(), 0);
+    EXPECT_EQ(g.GetVertex(idNodeB)->GetInEdges().size(), 0);
+    EXPECT_EQ(g.GetVertex(idNodeC)->GetInEdges().size(), 1);        
+}
+
+

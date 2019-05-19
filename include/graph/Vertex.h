@@ -29,10 +29,13 @@ public:
 	inline std::vector<graph::Edge*> GetOutEdges(void) {return this->out_edges;}
 	inline std::vector<graph::Edge*> GetInEdges(void) {return this->in_edges;}
 
+	//testing
+	unsigned int id;
+
 private:
 	std::vector<graph::Edge*> out_edges;		// outgoing edges store the edge objects
 	std::vector<graph::Edge*> in_edges;			// incoming edges store pointers
-	unsigned int id;
+	//unsigned int id;
 
 
 };

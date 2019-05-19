@@ -9,6 +9,7 @@
 #define SRC_GRAPH_GRAPH_H_
 
 #include "Vertex.h"
+#include "Edge.h"
 
 #include <vector>
 #include <string>
@@ -37,6 +38,7 @@ public:
 
 
 	unsigned int AddVertex();
+	unsigned int AddVertex(Vertex* vPtr);
 	int RemoveVertex(unsigned int vertexId);
 
 	int AddEdge(unsigned int startVertexId, unsigned int endVertexId);
@@ -67,7 +69,6 @@ private:
 	inline unsigned int GenerateVertexId();
 	inline unsigned int GenerateEdgeId();
 	int RemoveVertexEdges(graph::Vertex& v);
-	int UpdateRemaingEdgesAfterVertexRemoval(unsigned int vertexId);
 
 };
 

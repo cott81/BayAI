@@ -38,17 +38,44 @@ Graph::Graph(GraphRepresentation style)
 
 Graph::~Graph()
 {
+	//free heap memory for stored edges	
+	
+	for (Edge* ePtr : this->edges)
+	{
+		delete ePtr;
+	}
+	
+
+/*
+	if (this->edges.size() > 0)
+	{
+		Edge* ePtr = this->edges[0];
+		this->edges.erase(this->edges.begin());
+		delete ePtr;
+	}
+*/	
+
+/*
+	std::vector<Edge*>::iterator startIter;
+	startIter = this->edges.begin();
+	std::vector<Edge*>::iterator it;
+		for(it= startIter; it <= this->edges.end(); it++ )
+		{
+				//delete heap memory for vertex
+				delete *it;
+
+		    	// remove found element
+		    	this->edges.erase(it);
+		}
+		*/
+
 	//free heap memory for stored vertices
 	for (Vertex* vPtr : this->vertices)
 	{
 		delete vPtr;
 	}
 
-	//free heap memory for stored edges
-	for (Edge* ePtr : this->edges)
-	{
-		delete ePtr;
-	}
+
 }
 
 unsigned int Graph::GenerateVertexId()
@@ -67,9 +94,20 @@ unsigned int Graph::GenerateEdgeId()
 unsigned int Graph::AddVertex()
 {
 	int vertexId = GenerateVertexId();
-
-	//Vertex v(vertexId);
 	Vertex* vPtr = new Vertex(vertexId);
+	this->vertices.push_back(vPtr);
+
+	return vertexId;
+}
+
+unsigned int Graph::AddVertex(Vertex* vPtr)
+{
+	int vertexId = GenerateVertexId();
+	
+	//TODO: define friend class to make 
+	//set the id new
+	vPtr->id = vertexId;
+
 	this->vertices.push_back(vPtr);
 
 	return vertexId;
@@ -152,8 +190,6 @@ int Graph::RemoveVertex(unsigned int vertexId)
 	{
 		RemoveVertexEdges( *(this->vertices[vertexIdx]) );
 
-		UpdateRemaingEdgesAfterVertexRemoval(vertexId);
-
 		// delete heap memory for vertex
 		delete this->vertices[vertexIdx];
 		// delete position in vector
@@ -175,8 +211,6 @@ int Graph::RemoveVertex(unsigned int vertexId)
 		    {
 		    	//remove all edges in which the vertex "it" is involved
 		    	RemoveVertexEdges(**it);
-
-		    	UpdateRemaingEdgesAfterVertexRemoval(vertexId);
 
 				//delete heap memory for vertex
 				delete *it;
@@ -216,8 +250,9 @@ graph::Edge* Graph::GetEdge(unsigned int edgeId)
 	// we have an ordered list. End element has always biggest id
 	if ( edgeId > this->edges.back()->GetId() )
 	{
-		//id is not yet added
-		std::cerr << "Graph: ERROR: edges with id " << edgeId << " is not yet added to the graph. Return NULL." << std::endl;
+		//id is not (yet) added
+		// TODO: think to use return codes
+		std::cerr << "Graph: Edges with id " << edgeId << " is not added to the graph. Return NULL." << std::endl;
 		edgePtr = nullptr;
 	}
 	else
@@ -244,9 +279,12 @@ graph::Edge* Graph::GetEdge(unsigned int edgeId)
 		    if((*it)->GetId() == edgeId)
 		    {
 		    	edgePtr = *it;
-		        break;
+				return edgePtr;
 		    }
 		}
+
+		//no element found 
+		std::cerr << "Graph: Edges with id " << edgeId << " is not added to the graph. Return NULL." << std::endl;
 	}
 
 	return edgePtr;
@@ -307,7 +345,6 @@ int Graph::AddEdge(unsigned int startVertexId, unsigned int endVertexId)
 		return DUPLICATED_EDGE_ERROR;
 	}
 
-
 	return edgeId;
 }
 
@@ -331,11 +368,13 @@ int Graph::RemoveEdge(unsigned int edgeId)
 	{
 		if ( (*it)->GetId() == edgeId)
 		{
-			// remove element (pointer) in graph vector
-			this->edges.erase(it);
 			// free heap memory
 			delete *it;
 
+			// remove element (pointer) in graph vector
+			// carefull. the iterator changs after erase. No effect here, because we leave anyway after the erase.
+			this->edges.erase(it);
+			
 			break;
 		}
 	}
@@ -421,11 +460,11 @@ int Graph::RemoveVertexEdges(graph::Vertex& v)
 	{
 		if ( (*it2)->GetStartVertexPtr()->GetId() == v.GetId()  || (*it2)->GetEndVertexPtr()->GetId() == v.GetId())
 		{
-			// delete vector element (pointer)
-			this->edges.erase(it2);
-
 			//delete heap memory for the edge pointer
 			delete *it2;
+
+			// delete vector element (pointer)
+			this->edges.erase(it2);
 
 			//update iterator: point to the last valid element such that the increment is able to point to the following element
 			it2--;
@@ -433,30 +472,6 @@ int Graph::RemoveVertexEdges(graph::Vertex& v)
 	}
 
 	return returnCode;
-}
-
-// remaining edges need to be updated to point again to the correct vector element (following vertex elements take the place of the removed one)
-int Graph::UpdateRemaingEdgesAfterVertexRemoval(unsigned int vertexId)
-{
-	int returnCode = 0;
-
-	// only a single element is removed ... all elements with an id bigger than this needs to point to an index earlier
-	for (unsigned int i= 0; i<this->edges.size(); i++)
-	{
-		// this makes the edges point shortly to wrong vertices until the vertex is removed!!!
-		if (this->edges[i]->GetStartVertexPtr()->GetId() > vertexId )
-		{
-			// update pointer: point to the previous element
-			this->edges[i]->DecreaseStartVertexPtr();
-		}
-		if (this->edges[i]->GetEndVertexPtr()->GetId() > vertexId )
-		{
-			// update pointer: point to the previous element
-			this->edges[i]->DecreaseEndVertexPtr();
-		}
-	}
-	return returnCode;
-
 }
 
 int Graph::SomethingToTest(float in)
