@@ -32,3 +32,10 @@ build
 
 # visual studio code config
 .vscode
+
+# eclipse project file
+.project
+
+# graphDef.gv
+graphDef.gv
+test.png
