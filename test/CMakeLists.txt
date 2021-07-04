@@ -15,7 +15,7 @@ include_directories(~/work/FunProjects/googletest/googlemock/include)
 include_directories(~/work/FunProjects/googletest/googletest/include)
 include_directories("../include")
 
-link_directories(~/work/FunProjects/googletest/build/googlemock ~/work/FunProjects/googletest/build/googlemock/gtest)
+link_directories(~/work/FunProjects/googletest/build/lib)
  
 set(SRC_TESTS
 	tests.cpp
