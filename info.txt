@@ -1,0 +1,19 @@
+install stuff that is necessary to build this code
+
+- cmake (was already installed in this container)
+- libgtest-dev (for gtest)
+- google-mock (for gmock) ... not working
+- graphviz (for dot tool)
+- gpicview (image view ... not working, can be removed)
+
+
+gtest and gmock needs to be build in the container and symlinks have to be created
+- googletest is installed in /usr/src
+- configure it: sudo cmake . 
+- compile it: sudo cmake
+- create symlinks into /usr/lib: 
+    sudo ln -s /usr/lib/libgtest.a /usr/src/googletest/lib/libgtest.a 
+   sudo ln -s /usr/src/googletest/lib/libgtest.a  /usr/lib/libgtest.a
+
+
+learn how to set up your own c++ dev container and host it on docker hub  -> DONE

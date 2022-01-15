@@ -1,0 +1,17 @@
+// For format details, see https://aka.ms/devcontainer.json. For config options, see the README at:
+// https://github.com/microsoft/vscode-dev-containers/tree/v0.205.2/containers/cpp
+{
+	"name": "my C++",
+
+	// take this directly from docker hub
+	"image": "cott81/bayai_dev_dc",
+	//"image": "cott81/vsc-cpp-dc",
+
+	
+	// alternatively use this to build it from Dockerfile
+	//"build": {
+	//	"dockerfile": "Dockerfile",
+	//},
+
+	//"remoteUser": "vscode"
+}
