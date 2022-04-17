@@ -34,6 +34,7 @@ enum GraphErrors
 class Graph {
 public:
 	Graph(GraphRepresentation style=ADJACENCY_LIST);
+
 	virtual ~Graph();
 
 
@@ -41,23 +42,21 @@ public:
 	unsigned int AddVertex(Vertex* vPtr);
 	int RemoveVertex(unsigned int vertexId);
 
-	int AddEdge(unsigned int startVertexId, unsigned int endVertexId);
+	virtual int AddEdge(unsigned int startVertexId, unsigned int endVertexId);
 	int RemoveEdge(unsigned int edgeId);
 
 	Vertex* GetVertex(unsigned int vertexId);
 	Edge* GetEdge(unsigned int edgeId);
 
-	std::string GenerateDOTDescription();
-	void VisualizeDOTGraph(std::string name = "out");
+	virtual std::string GenerateDOTDescription();
+	void VisualizeDOTGraph(std::string name = "out", bool showGraph = false);
 
-	void PrintVertices();
-	void PrintEdges();
-
-	int SomethingToTest(float in);
+	virtual void PrintVertices();
+	virtual void PrintEdges();
 
 	inline const unsigned int GetEdgeIdOffset(void){return EDGE_COUNTER_OFFSET;};
 
-private:
+protected:
 	unsigned int vertexCounter;
 	unsigned int edgeCounter;
 	const unsigned int EDGE_COUNTER_OFFSET = 1000;
@@ -69,6 +68,9 @@ private:
 	inline unsigned int GenerateVertexId();
 	inline unsigned int GenerateEdgeId();
 	int RemoveVertexEdges(graph::Vertex& v);
+
+	//Generates the edge element (variation point for other types of graphs)
+	virtual Edge* GenerateEdgeFrom(unsigned int startVertexId, unsigned int endVertexId, unsigned int edgeId);
 
 };
 

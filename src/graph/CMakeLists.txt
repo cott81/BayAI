@@ -4,6 +4,7 @@ set (GRAPH_SRC
 	Vertex.cpp
 	Graph.cpp
 	A.cpp
+	B.cpp
 	)
 
 add_library(Graph SHARED ${GRAPH_SRC})

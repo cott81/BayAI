@@ -1,6 +1,7 @@
 
 set (A_STAR_SRC 
-	WeightedEdge.cpp 
+	WeightedEdge.cpp
+	WeightedGraph.cpp 
 	)
 
 add_library(AStar SHARED ${A_STAR_SRC})

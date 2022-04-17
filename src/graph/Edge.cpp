@@ -11,6 +11,12 @@
 
 namespace graph {
 
+
+Edge::Edge()
+{
+	//test
+}
+
 Edge::Edge(Vertex* originPtr, Vertex* goalPtr, unsigned int edgeId)
 {
 	this->link.first = originPtr;

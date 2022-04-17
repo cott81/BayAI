@@ -12,9 +12,13 @@
 
 namespace a_star {
 
-class WeightedEdge: public graph::Edge {
+class WeightedEdge 
+	: public graph::Edge 
+{
+
 public:
-	WeightedEdge(graph::Vertex* origin, graph::Vertex* goal, double edgeWeight);
+	WeightedEdge(graph::Vertex* origin, graph::Vertex* goal, unsigned int edgeId, double edgeWeight=1.0);
+	//WeightedEdge();
 	virtual ~WeightedEdge();
 
 	unsigned int AddWeight(double edgeWeight);

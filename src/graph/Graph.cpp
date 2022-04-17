@@ -40,10 +40,12 @@ Graph::~Graph()
 {
 	//free heap memory for stored edges	
 	
+	
 	for (Edge* ePtr : this->edges)
 	{
 		delete ePtr;
 	}
+	
 	
 
 /*
@@ -68,15 +70,16 @@ Graph::~Graph()
 		    	this->edges.erase(it);
 		}
 		*/
-
+	
 	//free heap memory for stored vertices
 	for (Vertex* vPtr : this->vertices)
 	{
 		delete vPtr;
 	}
 
-
 }
+
+
 
 unsigned int Graph::GenerateVertexId()
 {
@@ -319,15 +322,12 @@ int Graph::AddEdge(unsigned int startVertexId, unsigned int endVertexId)
 
 	// store the edge in graph's edge list
 	unsigned int edgeId = GenerateEdgeId();
-	//Edge e(GetVertex(startVertexId), GetVertex(endVertexId), edgeId);
-	Edge* e = new Edge (GetVertex(startVertexId), GetVertex(endVertexId), edgeId);
+
+	//use a function for generating the edge. in Base edge is generated in derived class overwrite this function
+	Edge* ePtr = GenerateEdgeFrom(startVertexId, endVertexId, edgeId);
 
 	// store edge object on vector
-	this->edges.push_back(e);
-
-	//TODO: not needed any more ... address stays "e"
-	// get the adress from the stored object in the vector
-	Edge* ePtr = GetEdge(edgeId);
+	this->edges.push_back(ePtr);
 
 	//check if there is already a same edge in the list by checking the vertices and their incoming and outgoing edges
 	// link vertices (add entries to the vertices data structures)
@@ -395,7 +395,6 @@ std::string Graph::GenerateDOTDescription()
 {
 	// build the string
 	std::stringstream ss;
-
 	ss << "digraph G {" << std::endl;
 
 	for(Edge* e : this->edges)
@@ -408,7 +407,7 @@ std::string Graph::GenerateDOTDescription()
 	return ss.str();
 }
 
-void Graph::VisualizeDOTGraph(std::string name)
+void Graph::VisualizeDOTGraph(std::string name, bool showGraph)
 {
 	std::string dotDesc = GenerateDOTDescription();
 
@@ -419,8 +418,13 @@ void Graph::VisualizeDOTGraph(std::string name)
 
 	std::string dotCmd = "dot -Tpng graphDef.gv -o " + name +".png";
 	system(dotCmd.c_str());
-	std::string showCmd = "gpicview "+ name + ".png &";
-	system(showCmd.c_str());
+
+	if (showGraph == true)
+	{
+		std::string showCmd = "gpicview "+ name + ".png &";
+		system(showCmd.c_str());
+	}
+
 	return;
 }
 
@@ -474,16 +478,11 @@ int Graph::RemoveVertexEdges(graph::Vertex& v)
 	return returnCode;
 }
 
-int Graph::SomethingToTest(float in)
+Edge* Graph::GenerateEdgeFrom(unsigned int startVertexId, unsigned int endVertexId, unsigned int edgeId)
 {
-	if (in > 0)
-	{
-		return 0;
-	}
-	else
-	{
-		return -1;
-	}
+	Edge* ePtr = new Edge (GetVertex(startVertexId), GetVertex(endVertexId), edgeId);
+
+	return ePtr;
 }
 
 

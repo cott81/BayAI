@@ -8,7 +8,9 @@
 
 namespace a_star {
 
-WeightedEdge::WeightedEdge(graph::Vertex* origin, graph::Vertex* goal, double edgeWeight) : graph::Edge(origin, goal) {
+WeightedEdge::WeightedEdge(graph::Vertex* origin, graph::Vertex* goal, unsigned int edgeId, double edgeWeight) 
+    : graph::Edge(origin, goal, edgeId)
+{
 
     this->weight = edgeWeight;
 }
@@ -19,9 +21,7 @@ WeightedEdge::~WeightedEdge() {
 unsigned int WeightedEdge::AddWeight(double edgeWeight)
 {
     this->weight = edgeWeight;
-
-    //TODO: add error code
     return 0;
 }
 
-} /* namespace bayes_net */
+} /* namespace a_star */

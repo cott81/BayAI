@@ -16,6 +16,8 @@ class Vertex; //forward declaration
 
 class Edge {
 public:
+
+	Edge();
 	Edge(Vertex* origin, Vertex* goal, unsigned int edgeId);
 	virtual ~Edge();
 
@@ -23,7 +25,7 @@ public:
 	inline Vertex* GetStartVertexPtr(void) {return this->link.first;}
 	inline Vertex* GetEndVertexPtr(void) {return this->link.second;}
 
-private:
+protected:
 	unsigned int id;
 	std::pair<Vertex*, Vertex*> link;
 };
